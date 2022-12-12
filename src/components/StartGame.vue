@@ -2,21 +2,52 @@
   <div>
     <h1>Match the Flag to the European Country!</h1>
     <button class="btn btn-primary" @click="$emit('beginGame')">Start Game</button>
+  <div class="hello">
+    <h1>{{ msg }}</h1>
   </div>
+  
 </template>
 
-<script>
+<script lang="ts">
+import * as flagsJson from "@/assets/flags.json";
+import FlagData from "@/classes/FlagData";
+const imagePath = "@/assets/flag-images/";
 import { defineComponent } from "vue";  
 import axios from 'axios';
 export default defineComponent({
-  name: 'StartGame',
-  props: {
-    msg: String
+  name: "StartGame",
+  props: { msg: String },
+  data() {
+    return {
+      flags: []
+    };
   },
+  methods: {
+    getFlags: function () {
+      const data = JSON.parse(JSON.stringify(flagsJson));
+      data.array.forEach((element) => {
+        this.flags.push(
+          new FlagData(
+            element.id,
+            element.country,
+            element.apiKeyPath,
+            `${imagePath}${element.imagePath}`            
+          )
+        );
+      });     
+    },
+    shuffle: function (array) {
+      for (let i = this.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      },
   data() {
     return { 
     }
-  },
+      return array;
+      },
   methods: { 
     async getConversation(message) {
       const accessToken = "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";
@@ -32,6 +63,13 @@ export default defineComponent({
             "Content-Type": "application/json", 
           },
         }
+  },
+ 
+  created() {
+    this.getFlags();
+    this.shuffle(JSON.parse(JSON.stringify(this.flags)));
+  },
+};
       );
       console.log(res.data);
       return res.data;
@@ -63,4 +101,5 @@ li {
 a {
   color: #42b983;
 }
+
 </style>
