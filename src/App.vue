@@ -1,20 +1,29 @@
+<!-- Will dynamically render StartGame, "Rounds", or the GameEnd components -->
+
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <StartGame msg="Welcome to your Vue App!" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import StartGame from './components/StartGame.vue';
+// import GameEnd from './components/GameEnd.vue';
+// import GameRound from './components/GameRound.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    StartGame
   }
 }
 </script>
 
 <style>
+body {
+  background-image: url("@/assets/bg-img-2.jpg");
+  background-size: cover;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
