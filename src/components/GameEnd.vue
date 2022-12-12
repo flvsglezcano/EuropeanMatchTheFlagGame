@@ -2,11 +2,11 @@
 
 <template>
     <div id="results">
-        
+        <p>Game Results:</p>
+        {{gameResults}}
     </div>
-    <button id="playAgain" @click="clearGameSession()">
-
-    </button>
+    <br/>
+    <button class="btn btn-primary" @click="clearGameSession()">Play Again?</button>
 </template>
   
 <script>
@@ -14,12 +14,14 @@ export default {
     name: 'GameEnd',
     data(){
         return {
-            gameResults: ""
+            gameResults: "5/5"
         }
     },
     methods:{
         clearGameSession(){
             //Clear Game Session and route to StartGame componenet
+
+            this.$emit('newGame');
         }
     }
 }

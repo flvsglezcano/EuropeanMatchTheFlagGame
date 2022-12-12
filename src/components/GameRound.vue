@@ -1,7 +1,9 @@
 
 <template>
     <div>
-        
+        <p>Game Time:</p>
+
+        <button class="btn btn-primary" :disabled="ifNoSelectionMade()">Next Round</button>
     </div>
 </template>
   
@@ -14,6 +16,9 @@ export default {
         }
     },
     methods:{
+        ifNoSelectionMade(){
+            return true;
+        }
     }
 }
 </script>
