@@ -19,7 +19,7 @@ export default defineComponent({
   },
   methods: { 
     async getConversation(message) {
-      const accessToken = "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";
+      const accessToken = "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";
       const body = {  
         model: "text-davinci-002",
         prompt:`${message}`,
@@ -33,7 +33,7 @@ export default defineComponent({
           },
         }
       );
-      console.log(res.data);
+      console.log(res.data.choices[0]);
       return res.data;
     },
   },
