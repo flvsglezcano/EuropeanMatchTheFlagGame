@@ -2,10 +2,9 @@
   <div class="container game-box">
     <div class="row">
       <div class="col-6">
-        <button @click>
+        <button >
           <img src="@/assets/flags-images/Cyprus.png" class="img-invalid" />
-        </button>
-        
+        </button>        
       </div>
       <div class="col-6">
         <img src="@/assets/flags-images/Germany.png" class="img-valid" />
