@@ -22,11 +22,30 @@
 </template>
 
 <script>
+import flagsJson from "@/assets/flags.json"
+
+//const imagePath = "@/assets/flag-images";
+
 export default {
   name: "StartGame",
-  props: {
-    msg: String,
+  props: {    msg: String,
   },
+  data() {
+    return {
+    flags: [] 
+    }   
+  },
+  methods:{
+    getFlags : function()    {
+      this.flags = JSON.parse(JSON.stringify(flagsJson));
+      return JSON.parse(JSON.stringify(flagsJson));
+    },
+   
+  },
+
+  created(){
+    this.getFlags();
+  }
 };
 </script>
 
