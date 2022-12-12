@@ -2,50 +2,57 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
   </div>
-  <div class="container game-box">
-    <div class="row">
-      <div class="col-6">
-        <img src="@/assets/flags-images/Cyprus.png" class="img-invalid" />
-      </div>
-      <div class="col-6">
-        <img src="@/assets/flags-images/Germany.png" class="img-valid" />
-      </div>
-
-      <div class="col-6">
-        <img src="@/assets/flags-images/Monaco.png"  />
-      </div>
-      <div class="col-6">
-        <img src="@/assets/flags-images/Norway.png"  />
-      </div>
-    </div>
-  </div>
+  
 </template>
 
-<script>
-import flagsJson from "@/assets/flags.json"
-
-//const imagePath = "@/assets/flag-images";
+<script lang="ts">
+import * as flagsJson from "@/assets/flags.json";
+import FlagData from "@/classes/FlagData";
+const imagePath = "@/assets/flag-images/";
 
 export default {
   name: "StartGame",
-  props: {    msg: String,
-  },
+  props: { msg: String },
   data() {
     return {
-    flags: [] 
-    }   
+      flags: [],
+      round1:[],
+      answerRound1:'',
+      round2:[],
+      round3:[],
+      round4:[],
+      round5:[]
+    };
   },
-  methods:{
-    getFlags : function()    {
-      this.flags = JSON.parse(JSON.stringify(flagsJson));
-      return JSON.parse(JSON.stringify(flagsJson));
+  methods: {
+    getFlags: function () {
+      const data = JSON.parse(JSON.stringify(flagsJson));
+      data.array.forEach((element) => {
+        this.flags.push(
+          new FlagData(
+            element.id,
+            element.country,
+            element.apiKeyPath,
+            `${imagePath}${element.imagePath}`            
+          )
+        );
+      });     
     },
-   
+    shuffle: function (array) {
+      for (let i = this.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      return array;
+    }
   },
-
-  created(){
+ 
+  created() {
     this.getFlags();
-  }
+    this.shuffle(JSON.parse(JSON.stringify(this.flags)));
+  },
 };
 </script>
 
@@ -65,25 +72,5 @@ li {
 a {
   color: #42b983;
 }
-img {
-  margin: 1rem;
-  border: 5px solid rgb(244, 242, 248);
-  border-radius: 5px;
-  padding: 1rem;
-  width: 360px !important;
-  height: 260px !important;
-}
-.img-valid {
-  border: 15px solid rgb(4, 127, 12);
-}
-.img-invalid {
-  border: 15px solid rgb(167, 9, 46);
-}
 
-.game-box {
-  position: relative;
-  max-width: 840px;
-  background-color: rgb(93, 210, 236);
-  border: 5px solid rgb(244, 242, 248);
-}
 </style>
