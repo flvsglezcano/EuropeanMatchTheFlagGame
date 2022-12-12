@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import * as flagsJson from "@/assets/flags.json";
-import FlagData from "@/classes/FlagData";
+import FlagData from "@/store/FlagData";
 const imagePath = "@/assets/flag-images/";
 
 export default {
@@ -27,7 +27,8 @@ export default {
             element.id,
             element.country,
             element.apiKeyPath,
-            `${imagePath}${element.imagePath}`            
+            `${imagePath}${element.imagePath}`,
+            false, false,""          
           )
         );
       });     

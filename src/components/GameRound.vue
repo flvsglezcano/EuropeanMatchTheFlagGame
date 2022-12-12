@@ -1,67 +1,236 @@
 <template>
-  <div class="container game-box" key:roundNumber  v-bind="activeRoundFlags" >
-    
-    <div class="row">
+  <div class="container game-box">
+    <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
       <div class="col-6">
-        <button >
-          <img src="@/assets/flags-images/Cyprus.png" class="img-invalid" />
-        </button>        
-      </div>
-      <div class="col-6">
-        <img src="@/assets/flags-images/Germany.png" class="img-valid" />
-      </div>
-
-      <div class="col-6">
-        <img src="@/assets/flags-images/Monaco.png" />
-      </div>
-      <div class="col-6">
-        <img src="@/assets/flags-images/Norway.png" />
+        <button @click="checkAnswer(flag.id)">
+          <img src="flag.imagePath" class="flag.classValidation" />
+        </button>
+        <span v-show="flag.showCountryName">{{ flag.country }}</span>
       </div>
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   name: "GameRound",
   props: ["flagData"],
   data() {
     return {
+      activeRoundFlags: [],
+      nextRound: Number,
       round1: [],
-      answerRound1: "",
-      roundNumber:Number,
-       activeRoundFlags:[],
-       activeRoundAnswer: "",
+      answerRound1: Number,
       round2: [],
+      answerRound2: Number,
       round3: [],
+      answerRound3: Number,
       round4: [],
+      answerRound4: Number,
       round5: [],
+      answerRound5: Number,
     };
   },
   methods: {
     setFlagsPerRound: function () {
       this.flags.forEach((element) => {
         switch (element.id) {
-          case "1":
-          case "2":
-          case "3":
-          case "4":
-            {
-            this.round1.push(element);           
-            let randomAnswer = this.getRandomInt(1,5);
-            this.answerRound1 = this.round1.find(item=>item.id === randomAnswer);
-            this.roundNumber= 1;
+          case 1:
+          case 2:
+          case 3:
+          case 4: {
+            this.round1.push(element);
+            this.answerRound1 = this.getRandomInt(1, 5);
+            let correctAnswer = this.round1.find(
+              (e) => e.id === this.answerRound1.id
+            );
+            correctAnswer.setActiveRound(true);
             break;
           }
-         default:
-          break;
+          case 5:
+          case 6:
+          case 7:
+          case 8: {
+            this.round2.push(element);
+            this.answerRound2 = this.getRandomInt(5, 9);
+            let correctAnswer = this.round1.find(
+              (e) => e.id === this.answerRound2.id
+            );
+            correctAnswer.setActiveRound(true);
+           
+            break;
+          }
+          case 9:
+          case 10:
+          case 11:
+          case 12: {
+            this.round3.push(element);
+            this.answerRound3 = this.getRandomInt(9, 13);
+            let correctAnswer = this.round1.find(
+              (e) => e.id === this.answerRound3.id
+            );
+            correctAnswer.setActiveRound(true);
+            
+            break;
+          }
+          case 13:
+          case 14:
+          case 15:
+          case 16: {
+            this.round4.push(element);
+            this.answerRound4 = this.getRandomInt(13, 17);
+            let correctAnswer = this.round1.find(
+              (e) => e.id === this.answerRound4.id
+            );
+            correctAnswer.setActiveRound(true);
+           
+            break;
+          }
+          case 17:
+          case 18:
+          case 19:
+          case 20: {
+            this.round5.push(element);
+            this.answerRound5 = this.getRandomInt(17, 21);
+            let correctAnswer = this.round1.find(
+              (e) => e.id === this.answerRound5.id
+            );
+            correctAnswer.setActiveRound(true);
+            
+            break;
+          }
+          default:
+            break;
         }
       });
     },
+    getRandomInt: function (minValue, maxValue) {
+      minValue = Math.ceil(minValue);
+      maxValue = Math.floor(maxValue);
+      return Math.floor(Math.random() * (maxValue - minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
+    },
+    setActiveRound: function (round) {
+      switch (round) {
+        case 1: {
+          this.activeRoundNumber = 1;
+          this.activeRoundFlags = this.round1;
+          this.nextRound = 2;
+          break;
+        }
+        case 2: {
+          this.activeRoundNumber = 2;
+          this.activeRoundFlags = this.round2;
+          this.nextRound = 3;
+          break;
+        }
+        case 3: {
+          this.activeRoundNumber = 3;
+          this.activeRoundFlags = this.round3;
+          this.nextRound = 4;
+          break;
+        }
+        case 4: {
+          this.activeRoundNumber = 4;
+          this.activeRoundFlags = this.round4;
+          this.nextRound = 5;
+          break;
+        }
+        case 5: {
+          this.activeRoundNumber = 5;
+          this.activeRoundFlags = this.round5;
+          this.nextRound = -1;
+          break;
+        }
+        default:
+          break;
+      }
+    },
+    checkAnswer: function (id) {
+      switch (this.activeRoundNumber) {
+        case 1: {
+          let answerFlag1 = this.round1.find((e) => e.id === id);
+          if (answerFlag1.isRoundAnswer === true) {
+            answerFlag1.setShowCountryName(true);
+            answerFlag1.classValidation = "img-valid";
+            //TODO ....
+            // call AI
+            // disable all buttons
+            // enable "Next button"
+          } else {
+            //TODO ....
+            answerFlag1.classValidation = "img-invalid";
+          }
+          break;
+        }
+        case 2: {
+          let answerFlag2 = this.round2.find((e) => e.id === id);
+          if (answerFlag2.isRoundAnswer === true) {
+            answerFlag2.setShowCountryName(true);
+            answerFlag2.classValidation = "img-valid";
+            //TODO ....
+            // call AI
+            // disable all buttons
+            // enable "Next button"
+          } else {
+            //TODO ....
+            answerFlag2.classValidation = "img-invalid";
+          }
+          break;
+        }
+        case 3: {
+          let answerFlag3 = this.round2.find((e) => e.id === id);
+          if (answerFlag3.isRoundAnswer === true) {
+            answerFlag3.setShowCountryName(true);
+            answerFlag3.classValidation = "img-valid";
+            //TODO ....
+            // call AI
+            // disable all buttons
+            // enable "Next button"
+          } else {
+            //TODO ....
+            answerFlag3.classValidation = "img-invalid";
+          }
+          break;
+        }
+        case 4: {
+          let answerFlag4 = this.round2.find((e) => e.id === id);
+          if (answerFlag4.isRoundAnswer === true) {
+            answerFlag4.setShowCountryName(true);
+            answerFlag4.classValidation = "img-valid";
+            //TODO ....
+            // call AI
+            // disable all buttons
+            // enable "Next button"
+          } else {
+            //TODO ....
+            answerFlag4.classValidation = "img-invalid";
+          }
+          break;
+        }
+        case 5: {
+          let answerFlag5 = this.round2.find((e) => e.id === id);
+          if (answerFlag5.isRoundAnswer === true) {
+            answerFlag5.setShowCountryName(true);
+            answerFlag5.classValidation = "img-valid";
+            //TODO ....
+            // call AI
+            // disable all buttons
+            // enable "Next button"
+          } else {
+            //TODO ....
+            answerFlag5.classValidation = "img-invalid";
+          }
+          break;
+        }
+      }
+    },
+    moveToNextRound: function(next)
+    {
+        this.setActiveRound(next);
+    }
   },
-  getRandomInt: function (minValue, maxValue) {
-    minValue = Math.ceil(minValue);
-    maxValue = Math.floor(maxValue);
-    return Math.floor(Math.random() * (maxValue -minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
+  create() {
+    this.setFlagsPerRound();
+    this.setActiveRound(1);
   },
 };
 </script>
