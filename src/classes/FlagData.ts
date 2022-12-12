@@ -3,6 +3,7 @@ export default class FlagData {
   country: string;
   apiKeyWord: string;
   imagePath: string;
+  isRoundAnswer: false;
 
   constructor(
     id: Number,

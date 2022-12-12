@@ -1,5 +1,6 @@
 <template>
-  <div class="container game-box">
+  <div class="container game-box" key:roundNumber  v-bind="activeRoundFlags" >
+    
     <div class="row">
       <div class="col-6">
         <button >
@@ -27,6 +28,9 @@ export default {
     return {
       round1: [],
       answerRound1: "",
+      roundNumber:Number,
+       activeRoundFlags:[],
+       activeRoundAnswer: "",
       round2: [],
       round3: [],
       round4: [],
@@ -40,10 +44,12 @@ export default {
           case "1":
           case "2":
           case "3":
-          case "4":{
+          case "4":
+            {
             this.round1.push(element);           
             let randomAnswer = this.getRandomInt(1,5);
             this.answerRound1 = this.round1.find(item=>item.id === randomAnswer);
+            this.roundNumber= 1;
             break;
           }
          default:
