@@ -21,6 +21,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
   name: "GameRound",
   props: ["flagData"],
@@ -63,6 +64,24 @@ export default {
     maxValue = Math.floor(maxValue);
     return Math.floor(Math.random() * (maxValue -minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
   },
+  async getConversation(message) {
+      const accessToken = "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";
+      const body = {  
+        model: "text-davinci-002",
+        prompt:`${message}`,
+      };
+ 
+      const res = await axios.post('https://api.openai.com/v1/completions', body,
+        {
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json", 
+          },
+        }
+      );
+      console.log(res.data);
+      return res.data;
+    }
 };
 </script>
 
