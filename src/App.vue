@@ -1,7 +1,6 @@
 <!-- Will dynamically render StartGame, "Rounds", or the GameEnd components -->
 
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
+<template> 
   <StartGame msg="Welcome to your Vue App!" />
 </template>
 
@@ -20,7 +19,7 @@ export default {
 
 <style>
 body {
-  background-image: url("@/assets/bg-img-2.jpg");
+  background-image: url("@/assets/bg-img.jpg");
   background-size: cover;
 }
 
