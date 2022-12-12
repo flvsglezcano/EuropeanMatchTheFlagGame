@@ -15,13 +15,7 @@ export default {
   props: { msg: String },
   data() {
     return {
-      flags: [],
-      round1:[],
-      answerRound1:'',
-      round2:[],
-      round3:[],
-      round4:[],
-      round5:[]
+      flags: []
     };
   },
   methods: {
