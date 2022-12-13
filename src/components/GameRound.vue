@@ -1,8 +1,10 @@
 <template>
   <h1>Match <b>{{countryNameAnswer}}</b> to its Flag</h1>
+  <hr/>
+  <br/><br/>
   <div class="container">
-    <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
-      <div class="col-md-6" :id="flag.id">
+    <div class="row">
+      <div class="col-md-6" v-for="flag in activeRoundFlags" :key="flag.id" :id="flag.id">
         <button
           @click="checkAnswer(flag.id)"
           class=""
@@ -403,8 +405,7 @@ img {
   border: 5px solid rgb(244, 242, 248);
 }
 
-.game-box > row{
-  position: relative;
-  min-width: 100% !important;
+.container > row {
+  max-width: 750px !important;
 }
 </style>
