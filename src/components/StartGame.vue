@@ -1,21 +1,23 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div>
+    <h1>Match the Flag to the European Country!</h1>
+   <button class="btn btn-primary" @click="$emit('beginGame')">
+      Start Game
+    </button>
   </div>
-  
 </template>
 
-<script lang="ts">
+<script>
 import * as flagsJson from "@/assets/flags.json";
-import FlagData from "@/classes/FlagData";
-const imagePath = "@/assets/flag-images/";
-
+const imagesFolder = "./assets/flag-images/";
+import FlagData from "@/classes/FlagData"
 export default {
   name: "StartGame",
   props: { msg: String },
+  emits: ["beginGame"],
   data() {
     return {
-      flags: []
+      flags: [],
     };
   },
   methods: {
@@ -23,14 +25,17 @@ export default {
       const data = JSON.parse(JSON.stringify(flagsJson));
       data.array.forEach((element) => {
         this.flags.push(
-          new FlagData(
-            element.id,
-            element.country,
-            element.apiKeyPath,
-            `${imagePath}${element.imagePath}`            
-          )
+          new FlagData({
+            id: element.id,
+            country: element.country,
+            apiKeyWord: element.apiKeyPath,
+            imagePath: `${imagesFolder}${element.imagePath}`,
+            isRoundAnswer: false,
+            showCountryName: false,
+            classValidation: ""
+          })
         );
-      });     
+      });
     },
     shuffle: function (array) {
       for (let i = this.length - 1; i > 0; i--) {
@@ -40,9 +45,8 @@ export default {
         array[j] = temp;
       }
       return array;
-    }
+    },
   },
- 
   created() {
     this.getFlags();
     this.shuffle(JSON.parse(JSON.stringify(this.flags)));
@@ -52,19 +56,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
 
 </style>
