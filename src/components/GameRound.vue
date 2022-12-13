@@ -2,8 +2,12 @@
   <h1>Match {{countryNameAnswer}} to its Flag</h1>
   <div class="container game-box">
     <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
-      <div class="col-6">
-        <button @click="checkAnswer(flag.id)" class="flagBtn" :disabled="flag.isBntDisabled">
+      <div class="col-6" :id="flag.id">
+        <button
+          @click="checkAnswer(flag.id)"
+          class=""
+          :disabled="flag.isBntDisabled"
+        >
           <img :src="flag.imagePath" :class="flag.classValidation" />
         </button>
         <br/><br/>
@@ -205,17 +209,23 @@ export default {
       }
     },
     checkAnswer: function (id) {
+      console.log("button clicked");
+      console.log(this.activeRoundNumber);
       switch (this.activeRoundNumber) {
         case 1: {
           let answerFlag1 = this.round1.find((e) => e.id === id);
-          if (answerFlag1.isRoundAnswer === true) {
+          console.log(answerFlag1);
+          if (answerFlag1.isRoundAnswer === true) { 
             this.userAnsweredCorrectly = true;
             answerFlag1.showCountryName = true;
             answerFlag1.classValidation = "img-valid";
+            this.disableRoundButtons(this.round1);
+           this.isBntDisabled= false;
             //TODO ....
             // call AI
             this.aiResponse=this.getConversation(answerFlag1.apiKeyWord); 
             // disable all buttons
+
             // enable "Next button"
             //set session
             this.setSession();
@@ -223,9 +233,14 @@ export default {
             this.userAnsweredCorrectly = false;
             answerFlag1.showTryAgainPrompt = true;
             answerFlag1.classValidation = "img-invalid";
+            this.disableRoundButtons(this.round1);
+           this.isBntDisabled= false;
           }
           this.disableRoundButtons(this.round1);
           this.isNextRoundBtnDisabled= false;
+           //this.round1.forEach((flag)=>{
+            //$('#'+flag.id).attr('disabled','disabled');
+           //})
           break;
         }
         case 2: {
