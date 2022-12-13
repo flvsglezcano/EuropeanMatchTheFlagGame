@@ -8,19 +8,20 @@
         <p>Game Time:</p>
         <span v-show="flag.showCountryName">{{ flag.country }}</span>
       </div>
-    </div>   
+    </div>
   </div>
-  <p id="AIresponse">AI Response</p>    
-  <button class="btn btn-primary" > 
+  <p id="AIresponse">AI Response</p>
+  <button class="btn btn-primary">
     <!-- :disabled="ifNoSelectionMade"> -->
-      Next Round
-    </button>
+    Next Round
+  </button>
 </template>
 <script lang="js">
-//const imagesFolder = "./assets/flag-images/";
+
+const imagesFolder = "./assets/flag-images/";
 export default {
   name: "GameRound",
-  props: ["flagData"],
+  props: ["flags"],
   data() {
     return {
       activeRoundFlags: [],
@@ -35,6 +36,15 @@ export default {
       answerRound4: Number,
       round5: [],
       answerRound5: Number,
+      flagModel:{
+        id: Number,
+        country: String,
+        apiKeyWord: String,
+        imagePath: String,
+        isRoundAnswer:Boolean,
+        showCountryName:Boolean,
+        classValidation:String
+      }
     };
   },
   computed:{
@@ -44,8 +54,11 @@ export default {
   },
   methods: {
     setFlagsPerRound: function () {
-      this.flags.forEach((element) => {
-        switch (element.id) {
+      this.flags.forEach((flagData) => {
+        let flag = JSON.parse(flagData);
+        console.log(flag.id);
+        let element = this.flagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.imagePath}`, false, false,"");
+        switch (flag.id) {
           case 1:
           case 2:
           case 3:
@@ -161,7 +174,7 @@ export default {
         case 1: {
           let answerFlag1 = this.round1.find((e) => e.id === id);
           if (answerFlag1.isRoundAnswer === true) {
-            answerFlag1.setShowCountryName(true);
+            answerFlag1.showCountryName = true;
             answerFlag1.classValidation = "img-valid";
             //TODO ....
             // call AI
@@ -176,7 +189,7 @@ export default {
         case 2: {
           let answerFlag2 = this.round2.find((e) => e.id === id);
           if (answerFlag2.isRoundAnswer === true) {
-            answerFlag2.setShowCountryName(true);
+            answerFlag2.showCountryName = true;
             answerFlag2.classValidation = "img-valid";
             //TODO ....
             // call AI
@@ -191,7 +204,7 @@ export default {
         case 3: {
           let answerFlag3 = this.round2.find((e) => e.id === id);
           if (answerFlag3.isRoundAnswer === true) {
-            answerFlag3.setShowCountryName(true);
+            answerFlag3.showCountryName = true;
             answerFlag3.classValidation = "img-valid";
             //TODO ....
             // call AI
@@ -206,7 +219,7 @@ export default {
         case 4: {
           let answerFlag4 = this.round2.find((e) => e.id === id);
           if (answerFlag4.isRoundAnswer === true) {
-            answerFlag4.setShowCountryName(true);
+            answerFlag4.showCountryName = true;
             answerFlag4.classValidation = "img-valid";
             //TODO ....
             // call AI
@@ -221,7 +234,7 @@ export default {
         case 5: {
           let answerFlag5 = this.round2.find((e) => e.id === id);
           if (answerFlag5.isRoundAnswer === true) {
-            answerFlag5.setShowCountryName(true);
+            answerFlag5.showCountryName = true;
             answerFlag5.classValidation = "img-valid";
             //TODO ....
             // call AI
@@ -239,9 +252,10 @@ export default {
       this.setActiveRound(next);
     },
 
-    
+
   },
   create() {
+
     this.setFlagsPerRound();
     this.setActiveRound(1);
   },
