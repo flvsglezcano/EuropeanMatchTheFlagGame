@@ -1,8 +1,8 @@
 <template>
-  <h1>Match {{countryNameAnswer}} to its Flag</h1>
-  <div class="container game-box">
+  <h1>Match <b>{{countryNameAnswer}}</b> to its Flag</h1>
+  <div class="container">
     <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
-      <div class="col-6" :id="flag.id">
+      <div class="col-md-6" :id="flag.id">
         <button
           @click="checkAnswer(flag.id)"
           class=""
@@ -22,12 +22,13 @@
     <p id="AIresponse">AI Response</p>
     {{aiResponse}}
   </div>
-  <button class="btn btn-primary" @click="moveToNextRound()" id="nextBtn" :disabled="ifNoSelectionMade">
+  <button class="btn btn-lg btn-primary" @click="moveToNextRound()" id="nextBtn" :disabled="ifNoSelectionMade">
     Next Round
   </button>
 </template>
 
 <script lang="js">
+
 class flagModel {
     constructor (id,
         country,
@@ -336,7 +337,6 @@ export default {
         }
       }
     },
-
     moveToNextRound: function () {
       this.setActiveRound(this.roundNum);
       this.$emit('nextBtnClicked')
@@ -399,8 +399,12 @@ img {
 }
 .game-box {
   position: relative;
-  max-width: 840px;
   background-color: rgb(93, 210, 236);
   border: 5px solid rgb(244, 242, 248);
+}
+
+.game-box > row{
+  position: relative;
+  min-width: 100% !important;
 }
 </style>

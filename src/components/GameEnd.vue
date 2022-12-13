@@ -6,7 +6,7 @@
         {{gameResults}}
     </div>
     <br/>
-    <router-link :to="{ name: 'StartGame' }" class="btn btn-primary" @click="clearGameSession()">Play Again?</router-link>
+    <router-link :to="{ name: 'StartGame' }" class="btn btn-lg btn-primary" @click="clearGameSession()">Play Again?</router-link>
 </template>
   
 <script>
