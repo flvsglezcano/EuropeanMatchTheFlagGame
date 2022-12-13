@@ -1,14 +1,26 @@
 <template>
-  <div class="container game-box">
-    <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
+  <div class="container game-box"  >
+    
+    <div class="row">
       <div class="col-6">
-        <button @click="checkAnswer(flag.id)">
-          <img src="flag.imagePath" class="flag.classValidation" />
-        </button>
-        <p>Game Time:</p>
-        <span v-show="flag.showCountryName">{{ flag.country }}</span>
+        <button >
+          <img src="@/assets/flags-images/Cyprus.png" class="img-invalid" />
+        </button>        
       </div>
-    </div>    
+      <div class="col-6">
+        <img src="@/assets/flags-images/Germany.png" class="img-valid" />
+      </div>
+
+      <div class="col-6">
+        <img src="@/assets/flags-images/Monaco.png" />
+      </div>
+      <div class="col-6">
+        <img src="@/assets/flags-images/Norway.png" />
+      </div>
+    </div>
+
+    <router-link class="btn btn-primary" :to="{ name: 'GameRound2', props: {flagData: flags} }">Next Round</router-link>
+
   </div>
   <button class="btn btn-primary" > 
     <!-- :disabled="ifNoSelectionMade"> -->
@@ -18,14 +30,17 @@
 <script>
 import axios from 'axios';
 export default {
-  name: "GameRound",
+  name: "GameRound1",
   props: ["flagData"],
   data() {
     return {
       activeRoundFlags: [],
       nextRound: Number,
       round1: [],
-      answerRound1: Number,
+      answerRound1: "",
+      roundNumber: Number,
+      activeRoundFlags: [],
+      activeRoundAnswer: "",
       round2: [],
       answerRound2: Number,
       round3: [],
@@ -109,8 +124,8 @@ export default {
 
             break;
           }
-          default:
-            break;
+         default:
+          break;
         }
       });
     },
@@ -262,6 +277,8 @@ export default {
       console.log(res.data);
       return res.data;
     }
+  }
+
 };
 </script>
 

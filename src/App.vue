@@ -1,31 +1,10 @@
-<!-- Will dynamically render StartGame, "Rounds", or the GameEnd components -->
-
 <template>
-  <component :is="currentComponent" @beginGame="changeComponent('GameRound')" @newGame="changeComponent('StartGame')"></component>
+    <router-view />
 </template>
 
 <script>
-import StartGame from './components/StartGame.vue';
-import GameEnd from './components/GameEnd.vue';
-import GameRound from './components/GameRound.vue';
-
 export default {
-  name: 'App',
-  components: {
-    'StartGame': StartGame,
-    'GameEnd': GameEnd,
-    'GameRound': GameRound
-  },
-  data() {
-    return {
-      currentComponent: 'StartGame',
-    }
-  },
-  methods:{
-    changeComponent: function(component){
-      this.currentComponent = component;
-    }
-  }
+  name: 'App'
 }
 </script>
 
@@ -41,6 +20,5 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 400px;
 }
 </style>
