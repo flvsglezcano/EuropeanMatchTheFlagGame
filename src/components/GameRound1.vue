@@ -19,13 +19,15 @@
       </div>
     </div>
   </div>
-  <p id="AIresponse">AI Response</p>
+  <p id="AIresponse">{{aiResponse}}</p>
   <button class="btn btn-primary">
     <!-- :disabled="ifNoSelectionMade"> -->
     Next Round
   </button>
 </template>
 <script lang="js">
+//import { numberLiteralTypeAnnotation } from '@babel/types';
+
 
 const imagesFolder = "./assets/flag-images/";
 export default {
@@ -55,7 +57,12 @@ export default {
         isRoundAnswer:Boolean,
         showCountryName:Boolean,
         classValidation:String
-      }
+      },
+      sessionModel:{
+        score:Number
+      },
+      aiResponse:"",
+      totalScore:0
     };
   },
   computed:{
@@ -188,7 +195,7 @@ export default {
             answerFlag1.classValidation = "img-valid";
             //TODO ....
             // call AI
-            //var aiResponse=this.getConversation(answerFlag1.apiKeyWord);
+            //var aiResponseData=this.getConversation(answerFlag1.apiKeyWord); 
             // disable all buttons
             // enable "Next button"
           } else {
@@ -285,6 +292,12 @@ export default {
       });
       console.log(res.data);
       return res.data;
+    },
+    setSession:function(flag){
+      if(flag.isRoundAnswer===true){
+        this.totalScore=this.totalScore+20;
+      }
+       
     }
     
   },

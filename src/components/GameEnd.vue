@@ -12,10 +12,11 @@
 <script>
 export default {
     name: 'GameEnd',
+    props:['totalScore'],
     data(){
         return {
             //Get results from local storage?
-            gameResults: "5/5"
+            gameResults: this.totalScore/100
         }
     },
     methods:{
