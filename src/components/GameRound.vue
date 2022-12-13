@@ -238,30 +238,30 @@ export default {
             answerFlag5.classValidation = "img-valid";
             //TODO ....
             // call AI         
-            // set session score = 2
+            // set session score = 2 an
           } else {
            
             answerFlag5.classValidation = "img-invalid";
              //TODO ....
-             //
-          }
-           // disable all buttons
-           // enable "Next button"
-            //  save session data
-            // set session score = 0
+             //set session score = 0 an
 
+          }
+           // disable all buttons  ip
+           // enable "Next button" ip
+           
+          
           break;
         }
       }
     },
     moveToNextRound: function (next) {
       this.setActiveRound(next);
-      // TODO; ....
+      // TODO gianmarco....
     },
 
 
   },
-  create() {
+  created() {
     this.setFlagsPerRound();
     this.setActiveRound(1);
   },
