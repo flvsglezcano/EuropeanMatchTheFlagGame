@@ -182,9 +182,7 @@ export default {
             //TODO ....
             answerFlag1.classValidation = "img-invalid";
           }
-          this.round1.forEach( element => {
-            element.isBtnDisabled = true;
-           })
+          this.disableRoundButtons(this.round1);
            this.isBntDisabled= false;          
           break;
         }
@@ -201,9 +199,7 @@ export default {
             //TODO ....
             answerFlag2.classValidation = "img-invalid";
           }
-          this.round2.forEach( element => {
-            element.isBtnDisabled = true;
-           })
+          this.disableRoundButtons(this.round2);
            this.isBntDisabled= false;          
      
           break;
@@ -221,9 +217,7 @@ export default {
             //TODO ....
             answerFlag3.classValidation = "img-invalid";
           }
-          this.round3.forEach( element => {
-            element.isBtnDisabled = true;
-           })
+          this.disableRoundButtons(this.round3);
            this.isBntDisabled= false;          
          
           break;
@@ -241,9 +235,7 @@ export default {
             //TODO ....
             answerFlag4.classValidation = "img-invalid";
           }
-          this.round4.forEach( element => {
-            element.isBtnDisabled = true;
-           })
+          this.disableRoundButtons(this.round4);
            this.isBntDisabled= false;          
           
           break;
@@ -262,10 +254,8 @@ export default {
              //TODO ....
              //set session score = 0 an
 
-          }          
-           this.round5.forEach( element => {
-            element.isBtnDisabled = true;
-           })
+          } 
+          this.disableRoundButtons(this.round5); 
            this.isBntDisabled= false;          
           break;
         }
@@ -276,8 +266,12 @@ export default {
       this.setActiveRound(next);
       // TODO gianmarco....
     },
-
-
+    disableRoundButtons: function(data)
+    {
+      data.forEach( element => {
+            element.isBtnDisabled = true;
+           })         
+    }
   },
   created() {
     this.setFlagsPerRound();
