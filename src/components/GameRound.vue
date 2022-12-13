@@ -1,13 +1,15 @@
 <template>
-  <h1>choose a flag</h1>
+  <h1>Match {{countryNameAnswer}} to its Flag</h1>
   <div class="container game-box">
     <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
       <div class="col-6">
         <button @click="checkAnswer(flag.id)" class="flagBtn" :disabled="flag.isBntDisabled">
-          <img :src="flag.imagePath" class="flag.classValidation" />
+          <img :src="flag.imagePath" :class="flag.classValidation" />
         </button>
-        <p>Game Time:</p>
-        <span v-show="flag.showCountryName">{{ flag.country }}</span>
+        <br/><br/>
+        <!-- <p>Game Time:</p> -->
+        <span v-if="flag.showCountryName">Correct, Great Job!</span>
+        <span v-if="flag.showTryAgainPrompt">So close! Proceed to the next round!</span> 
       </div>
     </div>
   </div>
@@ -18,7 +20,6 @@
 </template>
 
 <script lang="js">
-const imagesFolder = "../assets/flags-images/";
 class flagModel {
     constructor (id,
         country,
@@ -29,7 +30,7 @@ class flagModel {
         classValidation,
         isBtnDisabled)
         {
-         this.id= id;
+        this.id= id;
         this.country = country,
         this.apiKeyWord = apiKeyWord,
         this.imagePath = imagePath,
@@ -49,19 +50,25 @@ export default {
   data() {
     return {
       roundNumber:this.roundNum,
+      countryNameAnswer: "",
       flagData:[],
       activeRoundFlags: [],
       nextRound: Number,
       round1: [],
       answerRound1: Number,
+      answerRound1CountryName: "",
       round2: [],
       answerRound2: Number,
+      answerRound2CountryName: "",
       round3: [],
       answerRound3: Number,
+      answerRound3CountryName: "",
       round4: [],
       answerRound4: Number,
+      answerRound4CountryName: "",
       round5: [],
       answerRound5: Number,
+      answerRound5CountryName: "",
 
       isNextRoundBtnDisabled:Boolean, 
       aiResponse:"",
@@ -96,11 +103,8 @@ export default {
     setFlagsPerRound: function () {
       this.flags.forEach((flagJson) => {
         let flag = JSON.parse(JSON.stringify(flagJson));
-        console.log(flag)
+        console.log(this.flags)
         console.log(flag.id);
-        var fullpath=`${imagesFolder}${flag.image}`;
-        console.log("fullpath");
-        console.log(fullpath);
         let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, require(`../assets/flags-images/${flag.image}`) , false, false, "", false);
         this.flagData.push(element);
       });
@@ -115,6 +119,7 @@ export default {
       let correctAnswer1 = this.round1.find(
         (e) => e.id === this.answerRound1
       );
+      this.answerRound1CountryName = correctAnswer1.country;
       correctAnswer1.setRoundAnswer(true);
 
 
@@ -122,6 +127,7 @@ export default {
       let correctAnswer2 = this.round2.find(
         (e) => e.id === this.answerRound2
       );
+      this.answerRound2CountryName = correctAnswer2.country;
       correctAnswer2.setRoundAnswer(true);
 
 
@@ -129,6 +135,7 @@ export default {
       let correctAnswer3 = this.round3.find(
         (e) => e.id === this.answerRound3
       );
+      this.answerRound3CountryName = correctAnswer3.country;
       correctAnswer3.setRoundAnswer(true);
 
 
@@ -136,6 +143,7 @@ export default {
       let correctAnswer4 = this.round4.find(
         (e) => e.id === this.answerRound4
       );
+      this.answerRound4CountryName = correctAnswer4.country;
       correctAnswer4.setRoundAnswer(true);
 
 
@@ -144,6 +152,7 @@ export default {
       let correctAnswer5 = this.round5.find(
         (e) => e.id === this.answerRound5
       );
+      this.answerRound5CountryName = correctAnswer5.country;
       correctAnswer5.setRoundAnswer(true);
     },
     getRandomInt: function (round) {
@@ -155,30 +164,35 @@ export default {
         case 1: {
           this.activeRoundNumber = 1;
           this.activeRoundFlags = this.round1;
+          this.countryNameAnswer = this.answerRound1CountryName
           this.nextRound = 2;
           break;
         }
         case 2: {
           this.activeRoundNumber = 2;
           this.activeRoundFlags = this.round2;
+          this.countryNameAnswer = this.answerRound2CountryName
           this.nextRound = 3;
           break;
         }
         case 3: {
           this.activeRoundNumber = 3;
           this.activeRoundFlags = this.round3;
+          this.countryNameAnswer = this.answerRound3CountryName
           this.nextRound = 4;
           break;
         }
         case 4: {
           this.activeRoundNumber = 4;
           this.activeRoundFlags = this.round4;
+          this.countryNameAnswer = this.answerRound4CountryName
           this.nextRound = 5;
           break;
         }
         case 5: {
           this.activeRoundNumber = 5;
           this.activeRoundFlags = this.round5;
+          this.countryNameAnswer = this.answerRound5CountryName
           this.nextRound = -1;
           break;
         }
@@ -201,7 +215,7 @@ export default {
             //set session
             this.setSession();
           } else {
-            //TODO ....
+            answerFlag1.showTryAgainPrompt = true;
             answerFlag1.classValidation = "img-invalid";
           }
           this.disableRoundButtons(this.round1);
@@ -221,7 +235,7 @@ export default {
             //set session
             this.setSession();
           } else {
-            //TODO ....
+            answerFlag2.showTryAgainPrompt = true;
             answerFlag2.classValidation = "img-invalid";
           }
           this.disableRoundButtons(this.round2);
@@ -242,7 +256,7 @@ export default {
             //set session
             this.setSession();
           } else {
-            //TODO ....
+            answerFlag3.showTryAgainPrompt = true;
             answerFlag3.classValidation = "img-invalid";
           }
           this.disableRoundButtons(this.round3);
@@ -263,7 +277,7 @@ export default {
             //set session
             this.setSession();
           } else {
-            //TODO ....
+            answerFlag4.showTryAgainPrompt = true;
             answerFlag4.classValidation = "img-invalid";
           }
           this.disableRoundButtons(this.round4);
@@ -281,7 +295,7 @@ export default {
             //set session
             this.setSession();
           } else {
-
+            answerFlag5.showTryAgainPrompt = true;
             answerFlag5.classValidation = "img-invalid";
              //TODO ....
              //set session score = 0 an
