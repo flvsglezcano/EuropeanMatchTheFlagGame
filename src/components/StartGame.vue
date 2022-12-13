@@ -1,15 +1,13 @@
 <template>
-  <div id="gameStartSection">
+  <div id="startSection">
     <h1>Match the Flag to the European Country!</h1>
-    <button class="btn btn-primary" @click="$emit('beginGame')">
-      Start Game
-    </button>
+    <router-link class="btn btn-primary" :to="{ name: 'GameView' }">Start Game</router-link>
   </div>
 </template>
 
-<script> 
-import * as flagsJson from "@/assets/flags.json";
+<script>
 export default {
+  name: "StartGame"
   name: "StartGame",
   props: { msg: String },
   emits: ["beginGame"],
@@ -49,4 +47,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+#startSection {
+  margin-top: 400px;
+}
+</style>

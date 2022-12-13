@@ -1,5 +1,5 @@
 <template>
-  <component :is="currentComponent" @beginGame="changeComponent('GameRound')" @newGame="changeComponent('StartGame')"></component>
+  <router-view />
 </template>
 
 <script>
