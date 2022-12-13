@@ -5,9 +5,11 @@
         <button @click="checkAnswer(flag.id)">
           <img src="flag.imagePath" class="flag.classValidation" />
         </button>
-        <span v-show="flag.showCountryName">{{ flag.country }}</span>
+        <p>Game Time:</p>
+<span v-show="flag.showCountryName">{{ flag.country }}</span>
       </div>
     </div>
+        <button class="btn btn-primary" :disabled="ifNoSelectionMade()">Next Round</button>
   </div>
 </template>
 <script lang="ts">
@@ -226,6 +228,9 @@ export default {
     moveToNextRound: function(next)
     {
         this.setActiveRound(next);
+        ifNoSelectionMade(){
+            return true;
+        }
     }
   },
   create() {
