@@ -15,14 +15,25 @@ export default {
     props:["results"],
     data(){
         return {
-            gameResults: this.results+"/100"
+            gameResults: ""
         }
     },
     methods:{
         clearGameSession(){
             //Clear Game Session and route to StartGame componenet
-            this.gameResults = "0/5"
+            localStorage.setItem("totalScore","0");
+        },
+        getResults(){
+            if(localStorage.getItem("totalScore")===null|| localStorage.getItem("totalScore") === undefined){
+                localStorage.setItem("totalScore","0");
+            }
+            console.log(localStorage.getItem("totalScore"));
+            var totalScore=localStorage.getItem("totalScore");
+            this.gameResults = totalScore+"/100";
         }
+    },
+    created(){
+        this.getResults();
     }
 }
 </script>
