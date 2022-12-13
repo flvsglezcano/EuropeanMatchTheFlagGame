@@ -3,7 +3,7 @@
     <h1>Match the Flag to the European Country!</h1>
    <button class="btn btn-primary" @click="$emit('beginGame')">
       Start Game
-    </button>test
+    </button>
   </div>
 </template>
 
