@@ -8,7 +8,7 @@
           class="flagBtn"
           :disabled="flag.isBntDisabled"
         >
-          <img src="flag.imagePath" class="flag.classValidation" />
+          <img :src="flag.imagePath" class="flag.classValidation" />
         </button>
         <!-- <p>Game Time:</p>
         <span v-show="flag.showCountryName">{{ flag.country }}</span> -->
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="js">
-const imagesFolder = "./assets/flag-images/";
+const imagesFolder = "../assets/flags-images/";
 class flagModel {
     constructor (id,
         country,
@@ -109,7 +109,10 @@ export default {
         let flag = JSON.parse(JSON.stringify(flagJson));
         console.log(flag)
         console.log(flag.id);
-        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.imagePath}`, false, false, "", false);
+        var fullpath=`${imagesFolder}${flag.image}`;
+        console.log("fullpath");
+        console.log(fullpath);
+        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, require(`../assets/flags-images/${flag.image}`) , false, false, "", false);
         this.flagData.push(element);
       });
       this.round1 = this.flagData.slice(0, 4);
