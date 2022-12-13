@@ -294,6 +294,7 @@ export default {
           }
           this.disableRoundButtons(this.round5);
            this.isBntDisabled= false;
+           
           break;
         }
       }
@@ -333,7 +334,7 @@ export default {
   created() {
     this.getConversation("Fun fact about Italy");
     this.setFlagsPerRound();
-    this.setActiveRound(1);
+    this.setActiveRound(this.roundNum);
     this.isBntDisabled = true;
   },
 };
