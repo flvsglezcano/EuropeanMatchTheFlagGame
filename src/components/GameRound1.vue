@@ -17,18 +17,16 @@
       <div class="col-6">
         <img src="@/assets/flags-images/Norway.png" />
       </div>
+    </div> 
+    <div class="row">
+      <p>{{aiMessage}}</p>
     </div>
 
     <router-link class="btn btn-primary" :to="{ name: 'GameRound2', props: {flagData: flags} }">Next Round</router-link>
 
-  </div>
-  <button class="btn btn-primary" > 
-    <!-- :disabled="ifNoSelectionMade"> -->
-      Next Round
-    </button>
+  </div> 
 </template>
-<script>
-import axios from 'axios';
+<script> 
 export default {
   name: "GameRound1",
   props: ["flagData"],
@@ -38,8 +36,7 @@ export default {
       nextRound: Number,
       round1: [],
       answerRound1: "",
-      roundNumber: Number,
-      activeRoundFlags: [],
+      roundNumber: Number, 
       activeRoundAnswer: "",
       round2: [],
       answerRound2: Number,
@@ -49,6 +46,8 @@ export default {
       answerRound4: Number,
       round5: [],
       answerRound5: Number,
+      aiMessage:"",
+      flags:this.flagData
     };
   },
   computed:{
@@ -58,6 +57,7 @@ export default {
   },
   methods: {
     setFlagsPerRound: function () {
+      console.log(this.flagdata);
       this.flags.forEach((element) => {
         switch (element.id) {
           case 1:
@@ -179,6 +179,7 @@ export default {
             answerFlag1.classValidation = "img-valid";
             //TODO ....
             // call AI
+            //var aiResponse=this.getConversation(answerFlag1.apiKeyWord);
             // disable all buttons
             // enable "Next button"
           } else {
@@ -223,7 +224,7 @@ export default {
             answerFlag4.setShowCountryName(true);
             answerFlag4.classValidation = "img-valid";
             //TODO ....
-            // call AI
+            // call AI 
             // disable all buttons
             // enable "Next button"
           } else {
@@ -252,32 +253,33 @@ export default {
     moveToNextRound: function (next) {
       this.setActiveRound(next);
     },
-
-    
-  },
-  create() {
-    this.setFlagsPerRound();
-    this.setActiveRound(1);
-  },
-  async getConversation(message) {
-      const accessToken = "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";
-      const body = {  
-        model: "text-davinci-002",
-        prompt:`${message}`,
+    getConversation:async function(message) {
+      console.log("Inside AI method");
+      var accessToken = "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";
+      var body = {
+          model: "text-davinci-002",
+          prompt: "".concat(message),
       };
- 
-      const res = await axios.post('https://api.openai.com/v1/completions', body,
-        {
+      const axios=require("axios");
+      var res = await axios.post('https://api.openai.com/v1/completions', body, {
           headers: {
-            authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json", 
+              authorization: "Bearer ".concat(accessToken),
+              "Content-Type": "application/json",
           },
-        }
-      );
+      });
       console.log(res.data);
       return res.data;
     }
-  }
+    
+  },
+  created() {
+    this.getConversation("Fun fact about Italy");
+    this.setFlagsPerRound();
+    this.setActiveRound(1);
+     
+  },
+   
+  
 
 };
 </script>

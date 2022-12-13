@@ -5,8 +5,7 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios';
+<script> 
 import * as flagsJson from "@/assets/flags.json";
 const imagesFolder = "./assets/flag-images/";
 import FlagData from "@/classes/FlagData"
@@ -23,7 +22,7 @@ export default {
     getFlags: function () {
       const data = JSON.parse(JSON.stringify(flagsJson));
       console.log(data);
-      data.array.forEach((element) => {
+      data.default.forEach((element) => {
         this.flags.push(
           new FlagData({
             id: element.id,
@@ -45,33 +44,13 @@ export default {
         array[j] = temp;
       }
       return array;
-    },
-    async getConversation(message) {
-      const accessToken = "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";
-      const body = {  
-        model: "text-davinci-002",
-        prompt:`${message}`,
-      };
- 
-      const res = await axios.post('https://api.openai.com/v1/completions', body,
-        {
-          headers: {
-            authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json", 
-          },
-        }
-      );
-      console.log(res.data.choices[0]);
-      return res.data;
-    },
+    }
   },
  
   created() {
-    // this.getFlags();
-    this.shuffle(JSON.parse(JSON.stringify(this.flags)));
-    this.getConversation("Fun fact about Italy");
-  },
-  emits: ['beginGame']
+    this.getFlags();
+    this.shuffle(JSON.parse(JSON.stringify(this.flags))); 
+  }
 };
 </script>
 
