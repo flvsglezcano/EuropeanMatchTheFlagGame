@@ -1,11 +1,11 @@
 <template>
-  <div class="container game-box"  >
-    
+  <div class="container game-box">
+
     <div class="row">
       <div class="col-6">
-        <button >
+        <button>
           <img src="@/assets/flags-images/Cyprus.png" class="img-invalid" />
-        </button>        
+        </button>
       </div>
       <div class="col-6">
         <img src="@/assets/flags-images/Germany.png" class="img-valid" />
@@ -19,7 +19,15 @@
       </div>
     </div>
 
-    <router-link class="btn btn-primary" :to="{ name: 'GameRound2', props: {flagData: flags} }">Next Round</router-link>
+    {{round1}}
+    <br/><br/>
+    Answer:
+    {{answerRound1.country}}
+    <br/>
+
+
+
+    <router-link class="btn btn-primary" :to="{ name: 'GameRound2', params: { flagData: round2 } }">Next Round</router-link>
 
   </div>
 </template>
@@ -29,6 +37,7 @@ export default {
   props: ["flagData"],
   data() {
     return {
+      flags:this.flagData,
       round1: [],
       answerRound1: "",
       roundNumber: Number,
@@ -41,40 +50,45 @@ export default {
     };
   },
   methods: {
-    setFlagsPerRound: function () {
+    setFlagsForThisRound: function () {
+      console.log(this.flagData)
+      console.log(this.flags.element)
       this.flags.forEach((element) => {
+        console.log(element)
         switch (element.id) {
-          case "1":
-          case "2":
-          case "3":
-          case "4":
+          case 1:
+          case 2:
+          case 3:
+          case 4:
             {
-            this.round1.push(element);           
-            let randomAnswer = this.getRandomInt(1,5);
-            this.answerRound1 = this.round1.find(item=>item.id === randomAnswer);
-            this.roundNumber= 1;
+              this.round1.push(element);
+              let randomAnswer = this.getRandomInt(1, 5);
+              this.answerRound1 = this.round1.find(item => item.id === randomAnswer);
+              this.roundNumber = 1;
+              break;
+            }
+          default:
             break;
-          }
-         default:
-          break;
         }
       });
     },
-  },
-  getRandomInt: function (minValue, maxValue) {
-    minValue = Math.ceil(minValue);
-    maxValue = Math.floor(maxValue);
-    return Math.floor(Math.random() * (maxValue -minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
-  },
-  ifNoSelectionMade() {
-    return true;
-  },
-  updateSession(round) {
-    if (round.isCorrectAnswer) {
-      this.totalScore = this.totalScore + 20;
+    getRandomInt: function (minValue, maxValue) {
+      minValue = Math.ceil(minValue);
+      maxValue = Math.floor(maxValue);
+      return Math.floor(Math.random() * (maxValue - minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
+    },
+    ifNoSelectionMade() {
+      return true;
+    },
+    updateSession(round) {
+      if (round.isCorrectAnswer) {
+        this.totalScore = this.totalScore + 20;
+      }
     }
+  },
+  mounted(){
+    this.setFlagsForThisRound();
   }
-
 };
 </script>
 
@@ -88,9 +102,11 @@ img {
   width: 360px !important;
   height: 260px !important;
 }
+
 .img-valid {
   border: 15px solid rgb(4, 127, 12);
 }
+
 .img-invalid {
   border: 15px solid rgb(167, 9, 46);
 }

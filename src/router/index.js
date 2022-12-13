@@ -11,43 +11,44 @@ const routes = [
       {
         path: "/",
         name: "StartGame",
-        component: StartGame,
+        props: true,
+        component: StartGame
       },
       {
         path: '/components/GameRound1.vue',
         name: "GameRound1",
-        component: GameRound1,
-        props: true
+        props: true,
+        component: GameRound1
       },
       {
         path: '/components/GameRound2.vue',
         name: "GameRound2",
-        component: GameRound2,
-        props: true
+        props: true,
+        component: GameRound2
       },
       {
         path: '/components/GameRound3.vue',
         name: "GameRound3",
-        component: GameRound3,
-        props: true
+        props: true,
+        component: GameRound3
       },
       {
         path: '/components/GameRound4.vue',
         name: "GameRound4",
-        component: GameRound4,
-        props: true
+        props: true,
+        component: GameRound4
       },
       {
         path: '/components/GameRound5.vue',
         name: "GameRound5",
-        component: GameRound5,
-        props: true
+        props: true,
+        component: GameRound5
       },
       {
         path: '/components/GameEnd.vue',
         name: "GameEnd",
-        component: GameEnd,
-        props: true
+        props: true,
+        component: GameEnd
       }
  ]
 

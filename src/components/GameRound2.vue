@@ -19,8 +19,13 @@
       </div>
     </div>
 
-    <router-link class="btn btn-primary" :to="{ name: 'GameRound3', props: {flagData: flags} }">Next Round</router-link>
+    {{round2}}
+    <br/><br/>
+    Answer:
+    {{answerRound2.country}}
+    <br/>
 
+    <router-link class="btn btn-primary" :to="{ name: 'GameRound3', props: {flagData: flags} }">Next Round</router-link>
   </div>
 </template>
 <script>
@@ -29,52 +34,51 @@ export default {
   props: ["flagData"],
   data() {
     return {
-      round1: [],
-      answerRound1: "",
+      flags: this.flagData,
+      round2: [],
+      answerRound2: "",
       roundNumber: Number,
       activeRoundFlags: [],
-      activeRoundAnswer: "",
-      round2: [],
-      round3: [],
-      round4: [],
-      round5: [],
+      activeRoundAnswer: ""
     };
   },
   methods: {
     setFlagsPerRound: function () {
       this.flags.forEach((element) => {
         switch (element.id) {
-          case "1":
-          case "2":
-          case "3":
-          case "4":
+          case 5:
+          case 6:
+          case 7:
+          case 8:
             {
-            this.round1.push(element);           
-            let randomAnswer = this.getRandomInt(1,5);
-            this.answerRound1 = this.round1.find(item=>item.id === randomAnswer);
-            this.roundNumber= 1;
+              this.round2.push(element);
+              let randomAnswer = this.getRandomInt(5, 9);
+              this.answerRound2 = this.round2.find(item => item.id === randomAnswer);
+              this.roundNumber = 2;
+              break;
+            }
+          default:
             break;
-          }
-         default:
-          break;
         }
       });
     },
-  },
-  getRandomInt: function (minValue, maxValue) {
-    minValue = Math.ceil(minValue);
-    maxValue = Math.floor(maxValue);
-    return Math.floor(Math.random() * (maxValue -minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
-  },
-  ifNoSelectionMade() {
-    return true;
-  },
-  updateSession(round) {
-    if (round.isCorrectAnswer) {
-      this.totalScore = this.totalScore + 20;
+    getRandomInt: function (minValue, maxValue) {
+      minValue = Math.ceil(minValue);
+      maxValue = Math.floor(maxValue);
+      return Math.floor(Math.random() * (maxValue - minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
+    },
+    ifNoSelectionMade() {
+      return true;
+    },
+    updateSession(round) {
+      if (round.isCorrectAnswer) {
+        this.totalScore = this.totalScore + 20;
+      }
     }
+  },
+  mounted(){
+    this.setFlagsPerRound();
   }
-
 };
 </script>
 
