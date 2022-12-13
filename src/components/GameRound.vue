@@ -341,7 +341,8 @@ export default {
     },
     moveToNextRound: function () {
       this.setActiveRound(this.roundNum);
-      this.$emit('nextBtnClicked')
+      this.$emit('nextBtnClicked',this.totalScore);
+      // TODO gianmarco....
     },
     getConversation:async function(message) { 
       var accessToken = "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";
@@ -361,7 +362,11 @@ export default {
       return res.data.choices[0].text;
     },
     setSession:function(){ 
-        this.totalScore=this.totalScore+20;  
+      if(localStorage.getItem("totalScore")===null|| localStorage.getItem("totalScore") === undefined){
+        localStorage.setItem("totalScore","0");
+      }
+      var totalScore=localStorage.getItem("totalScore")+20;
+      localStorage.setItem("totalScore",totalScore) ;
     },
     
     disableRoundButtons: function(data)
