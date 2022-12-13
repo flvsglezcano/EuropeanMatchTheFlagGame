@@ -5,9 +5,8 @@
   
 </template>
 
-<script lang="ts">
-import * as flagsJson from "@/assets/flags.json";
-import FlagData from "@/classes/FlagData";
+<script>
+import * as flagsJson from "@/assets/flags.json"; 
 const imagePath = "@/assets/flag-images/";
 export default {
   name: "StartGame",
@@ -20,14 +19,14 @@ export default {
   methods: {
     getFlags: function () {
       const data = JSON.parse(JSON.stringify(flagsJson));
+      console.log(data);
       data.array.forEach((element) => {
-        this.flags.push(
-          new FlagData(
-            element.id,
+        var flag=[element.id,
             element.country,
             element.apiKeyPath,
-            `${imagePath}${element.imagePath}`            
-          )
+            `${imagePath}${element.imagePath}`];
+        this.flags.push(
+          flag
         );
       });     
     },

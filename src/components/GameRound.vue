@@ -54,7 +54,7 @@ export default {
             break;
           }
          default:
-          break;totalScore:0
+          break;
         }
       });
     },
