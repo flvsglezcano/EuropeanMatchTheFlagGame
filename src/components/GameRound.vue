@@ -348,8 +348,10 @@ export default {
       if(localStorage.getItem("totalScore")===null|| localStorage.getItem("totalScore") === undefined){
         localStorage.setItem("totalScore","0");
       }
-      var totalScore=localStorage.getItem("totalScore")+20;
-      localStorage.setItem("totalScore",totalScore) ;
+      var totalScore=parseInt(localStorage.getItem("totalScore"))+20;
+      localStorage.setItem("totalScore",totalScore.toString()) ;
+      console.log("localstorage totalscore");
+      console.log(localStorage.getItem("totalScore"));
     },
     
     disableRoundButtons: function(data)
