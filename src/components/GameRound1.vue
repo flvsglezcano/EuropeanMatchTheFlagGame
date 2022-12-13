@@ -1,7 +1,7 @@
 <template>
-  <div class="container game-box"  >
-    
-    <div class="row">
+  <h1> choose a flag </h1>
+  <div class="container game-box">
+    <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
       <div class="col-6">
         <button >
           <img src="@/assets/flags-images/Cyprus.png" class="img-invalid" />
@@ -17,19 +17,20 @@
       <div class="col-6">
         <img src="@/assets/flags-images/Norway.png" />
       </div>
-    </div> 
-    <div class="row">
-      <p>{{aiMessage}}</p>
     </div>
-
-    <router-link class="btn btn-primary" :to="{ name: 'GameRound2', props: {flagData: flags} }">Next Round</router-link>
-
-  </div> 
+  </div>
+  <p id="AIresponse">AI Response</p>
+  <button class="btn btn-primary">
+    <!-- :disabled="ifNoSelectionMade"> -->
+    Next Round
+  </button>
 </template>
-<script> 
+<script lang="js">
+
+const imagesFolder = "./assets/flag-images/";
 export default {
-  name: "GameRound1",
-  props: ["flagData"],
+  name: "GameRound",
+  props: ["flags"],
   data() {
     return {
       activeRoundFlags: [],
@@ -46,8 +47,15 @@ export default {
       answerRound4: Number,
       round5: [],
       answerRound5: Number,
-      aiMessage:"",
-      flags:this.flagData
+      flagModel:{
+        id: Number,
+        country: String,
+        apiKeyWord: String,
+        imagePath: String,
+        isRoundAnswer:Boolean,
+        showCountryName:Boolean,
+        classValidation:String
+      }
     };
   },
   computed:{
@@ -57,9 +65,11 @@ export default {
   },
   methods: {
     setFlagsPerRound: function () {
-      console.log(this.flagdata);
-      this.flags.forEach((element) => {
-        switch (element.id) {
+      this.flags.forEach((flagData) => {
+        let flag = JSON.parse(flagData);
+        console.log(flag.id);
+        let element = this.flagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.imagePath}`, false, false,"");
+        switch (flag.id) {
           case 1:
           case 2:
           case 3:
@@ -120,8 +130,7 @@ export default {
             let correctAnswer = this.round1.find(
               (e) => e.id === this.answerRound5.id
             );
-            correctAnswer.setActiveRound(true);
-
+            correctAnswer.isRoundAnswer = true;
             break;
           }
          default:
@@ -175,7 +184,7 @@ export default {
         case 1: {
           let answerFlag1 = this.round1.find((e) => e.id === id);
           if (answerFlag1.isRoundAnswer === true) {
-            answerFlag1.setShowCountryName(true);
+            answerFlag1.showCountryName = true;
             answerFlag1.classValidation = "img-valid";
             //TODO ....
             // call AI
@@ -191,7 +200,7 @@ export default {
         case 2: {
           let answerFlag2 = this.round2.find((e) => e.id === id);
           if (answerFlag2.isRoundAnswer === true) {
-            answerFlag2.setShowCountryName(true);
+            answerFlag2.showCountryName = true;
             answerFlag2.classValidation = "img-valid";
             //TODO ....
             // call AI
@@ -206,7 +215,7 @@ export default {
         case 3: {
           let answerFlag3 = this.round2.find((e) => e.id === id);
           if (answerFlag3.isRoundAnswer === true) {
-            answerFlag3.setShowCountryName(true);
+            answerFlag3.showCountryName = true;
             answerFlag3.classValidation = "img-valid";
             //TODO ....
             // call AI
@@ -221,7 +230,7 @@ export default {
         case 4: {
           let answerFlag4 = this.round2.find((e) => e.id === id);
           if (answerFlag4.isRoundAnswer === true) {
-            answerFlag4.setShowCountryName(true);
+            answerFlag4.showCountryName = true;
             answerFlag4.classValidation = "img-valid";
             //TODO ....
             // call AI 
@@ -236,22 +245,29 @@ export default {
         case 5: {
           let answerFlag5 = this.round2.find((e) => e.id === id);
           if (answerFlag5.isRoundAnswer === true) {
-            answerFlag5.setShowCountryName(true);
+            answerFlag5.showCountryName = true;
             answerFlag5.classValidation = "img-valid";
             //TODO ....
-            // call AI
-            // disable all buttons
-            // enable "Next button"
+            // call AI         
+            // set session score = 2 an
           } else {
-            //TODO ....
+           
             answerFlag5.classValidation = "img-invalid";
+             //TODO ....
+             //set session score = 0 an
+
           }
+           // disable all buttons  ip
+           // enable "Next button" ip
+           
+          
           break;
         }
       }
     },
     moveToNextRound: function (next) {
       this.setActiveRound(next);
+      // TODO gianmarco....
     },
     getConversation:async function(message) {
       console.log("Inside AI method");

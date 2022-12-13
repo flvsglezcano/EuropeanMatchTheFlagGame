@@ -1,14 +1,14 @@
 <template>
   <div id="gameStartSection">
     <h1>Match the Flag to the European Country!</h1>
-    <router-link class="btn btn-primary" :to="{ name: 'GameRound1', props: {flagData: flags} }">Start Game</router-link>
+    <button class="btn btn-primary" @click="$emit('beginGame')">
+      Start Game
+    </button>
   </div>
 </template>
 
 <script> 
 import * as flagsJson from "@/assets/flags.json";
-const imagesFolder = "./assets/flag-images/";
-import FlagData from "@/classes/FlagData"
 export default {
   name: "StartGame",
   props: { msg: String },
@@ -19,43 +19,34 @@ export default {
     };
   },
   methods: {
-    getFlags: function () {
-      const data = JSON.parse(JSON.stringify(flagsJson));
-      console.log(data);
-      data.default.forEach((element) => {
-        this.flags.push(
-          new FlagData({
-            id: element.id,
-            country: element.country,
-            apiKeyWord: element.apiKeyPath,
-            imagePath: `${imagesFolder}${element.imagePath}`,
-            isRoundAnswer: false,
-            showCountryName: false,
-            classValidation: ""
-          })
-        );
-      });
+    getFlags: function () { 
+      flagsJson.forEach((element) => {
+        this.flags.push(element);
+      });     
     },
     shuffle: function (array) {
-      for (let i = this.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+      var currentIndex = array.length,
+        temporaryValue,
+        randomIndex;
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
       }
       return array;
     }
   },
- 
-  created() {
+  created() {    
     this.getFlags();
-    this.shuffle(JSON.parse(JSON.stringify(this.flags))); 
-  }
+    this.shuffle(this.flags);    
+  },
 };
 </script>
 
-<style scoped>
-#gameStartSection {
-  margin-top: 400px;
-}
-</style>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped></style>
