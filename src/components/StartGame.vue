@@ -48,8 +48,8 @@ export default {
     },
   },
   created() {
-    this.getFlags();
-    this.shuffle(JSON.parse(JSON.stringify(this.flags)));
+   // this.getFlags();
+   // this.shuffle(JSON.parse(JSON.stringify(this.flags)));
   },
 };
 </script>

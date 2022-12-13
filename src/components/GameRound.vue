@@ -8,8 +8,9 @@
         <p>Game Time:</p>
         <span v-show="flag.showCountryName">{{ flag.country }}</span>
       </div>
-    </div>    
+    </div>   
   </div>
+  <p id="AIresponse">AI Response</p>    
   <button class="btn btn-primary" > 
     <!-- :disabled="ifNoSelectionMade"> -->
       Next Round
