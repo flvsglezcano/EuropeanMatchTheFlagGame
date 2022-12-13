@@ -3,11 +3,7 @@
   <div class="container game-box">
     <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
       <div class="col-6">
-        <button
-          @click="checkAnswer(flag.id)"
-          class="flagBtn"
-          :disabled="flag.isBntDisabled"
-        >
+        <button @click="checkAnswer(flag.id)" class="flagBtn" :disabled="flag.isBntDisabled">
           <img :src="flag.imagePath" class="flag.classValidation" />
         </button>
         <p>Game Time:</p>
@@ -16,12 +12,7 @@
     </div>
   </div>
   <p id="AIresponse">AI Response</p>
-  <button
-    class="btn btn-primary"
-    @click="moveToNextRound()"
-    id="nextBtn"
-    :disabled="inNextBtnDisable"
-  >
+  <button class="btn btn-primary" @click="moveToNextRound()" id="nextBtn" :disabled="ifNoSelectionMade">
     Next Round
   </button>
 </template>
@@ -72,14 +63,14 @@ export default {
       round5: [],
       answerRound5: Number,
 
-      isBntDisabled:Boolean, 
+      isNextRoundBtnDisabled:Boolean, 
       aiResponse:"",
       totalScore:0
     };
   },
   computed:{
     ifNoSelectionMade() {
-      return true;
+      return this.isNextRoundBtnDisabled;
     },
   },
   methods: {
@@ -113,27 +104,20 @@ export default {
         let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, require(`../assets/flags-images/${flag.image}`) , false, false, "", false);
         this.flagData.push(element);
       });
+
       this.round1 = this.flagData.slice(0, 4);
       this.round2 = this.flagData.slice(4, 8);
       this.round3 = this.flagData.slice(8, 12);
       this.round4 = this.flagData.slice(12, 16);
       this.round5 = this.flagData.slice(16, 20);
 
-      console.log("Round1");
-      console.log(this.round1);
       this.answerRound1 = this.getRandomInt(this.round1); 
-      console.log("Answer Round1");
-      console.log(this.answerRound1);
       let correctAnswer1 = this.round1.find(
         (e) => e.id === this.answerRound1
       );
-      console.log("correct answer1");
-      console.log(correctAnswer1);
       correctAnswer1.setRoundAnswer(true);
-      console.log(correctAnswer1.isRoundAnswer);
 
 
-      console.log(this.round2);
       this.answerRound2 = this.getRandomInt(this.round2); 
       let correctAnswer2 = this.round2.find(
         (e) => e.id === this.answerRound2
@@ -141,7 +125,6 @@ export default {
       correctAnswer2.setRoundAnswer(true);
 
 
-      console.log(this.round3);
       this.answerRound3 = this.getRandomInt(this.round3); 
       let correctAnswer3 = this.round3.find(
         (e) => e.id === this.answerRound3
@@ -149,7 +132,6 @@ export default {
       correctAnswer3.setRoundAnswer(true);
 
 
-      console.log(this.round4);
       this.answerRound4 = this.getRandomInt(this.round4); 
       let correctAnswer4 = this.round4.find(
         (e) => e.id === this.answerRound4
@@ -158,20 +140,15 @@ export default {
 
 
 
-      console.log(this.round5);
       this.answerRound5 = this.getRandomInt(this.round5); 
       let correctAnswer5 = this.round5.find(
         (e) => e.id === this.answerRound5
       );
       correctAnswer5.setRoundAnswer(true);
-
     },
     getRandomInt: function (round) {
       let ids=round.map(a=>a.id);
-      //var minValue = Math.min(ids);
-      //var maxValue = Math.max(ids);
       return ids[Math.floor(Math.random() * ids.length)];
-      //return Math.floor(Math.random() * (maxValue - minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
     },
     setActiveRound: function (round) {
       switch (round) {
@@ -228,7 +205,7 @@ export default {
             answerFlag1.classValidation = "img-invalid";
           }
           this.disableRoundButtons(this.round1);
-           this.isBntDisabled= false;
+          this.isNextRoundBtnDisabled= false;
           break;
         }
         case 2: {
@@ -248,7 +225,7 @@ export default {
             answerFlag2.classValidation = "img-invalid";
           }
           this.disableRoundButtons(this.round2);
-           this.isBntDisabled= false;
+          this.isNextRoundBtnDisabled= false;
 
           break;
         }
@@ -269,7 +246,7 @@ export default {
             answerFlag3.classValidation = "img-invalid";
           }
           this.disableRoundButtons(this.round3);
-           this.isBntDisabled= false;
+          this.isNextRoundBtnDisabled= false;
 
           break;
         }
@@ -290,8 +267,7 @@ export default {
             answerFlag4.classValidation = "img-invalid";
           }
           this.disableRoundButtons(this.round4);
-           this.isBntDisabled= false;
-
+          this.isNextRoundBtnDisabled= false;
           break;
         }
         case 5: {
@@ -312,7 +288,7 @@ export default {
 
           }
           this.disableRoundButtons(this.round5);
-           this.isBntDisabled= false;
+          this.isNextRoundBtnDisabled= false;
           break;
         }
       }
