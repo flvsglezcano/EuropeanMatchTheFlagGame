@@ -3,11 +3,7 @@
   <div class="container game-box">
     <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
       <div class="col-6" :id="flag.id">
-        <button
-          @click="checkAnswer(flag.id)"
-          class=""
-          :disabled="flag.isBntDisabled"
-        >
+        <button @click="checkAnswer(flag.id)" :disabled="flag.isBtnDisabled">
           <img :src="flag.imagePath" :class="flag.classValidation" />
         </button>
         <!-- <p>Game Time:</p>
@@ -15,7 +11,7 @@
       </div>
     </div>
   </div>
-  <!-- <p id="AIresponse">AI Response</p> -->
+  <p id="AIresponse">{{aiResponse}}</p>
   <button
     class="btn btn-primary"
     @click="moveToNextRound()"
@@ -220,9 +216,7 @@ export default {
           console.log(answerFlag1);
           if (answerFlag1.isRoundAnswer === true) { 
             answerFlag1.showCountryName = true;
-            answerFlag1.classValidation = "img-valid";
-            this.disableRoundButtons(this.round1);
-           this.isBntDisabled= false;
+            answerFlag1.classValidation = "img-valid"; 
             //TODO ....
             // call AI
             this.aiResponse=this.getConversation(answerFlag1.apiKeyWord); 
@@ -233,9 +227,7 @@ export default {
             this.setSession();
           } else {
             //TODO ....
-            answerFlag1.classValidation = "img-invalid";
-            this.disableRoundButtons(this.round1);
-           this.isBntDisabled= false;
+            answerFlag1.classValidation = "img-invalid"; 
           }
           this.disableRoundButtons(this.round1);
            this.isBntDisabled= false;
@@ -333,11 +325,11 @@ export default {
 
     moveToNextRound: function () {
       this.setActiveRound(this.roundNum);
-      this.$emit('nextBtnClicked')
+      this.$emit('nextBtnClicked',this.totalScore);
       // TODO gianmarco....
     },
     getConversation:async function(message) { 
-      var accessToken = "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";
+      var accessToken = "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";
       var body = {
           model: "text-davinci-003",
           prompt: "".concat(message),
@@ -353,7 +345,11 @@ export default {
       return res.data.choices[0].text;
     },
     setSession:function(){ 
-        this.totalScore=this.totalScore+20;  
+      if(localStorage.getItem("totalScore")===null|| localStorage.getItem("totalScore") === undefined){
+        localStorage.setItem("totalScore","0");
+      }
+      var totalScore=localStorage.getItem("totalScore")+20;
+      localStorage.setItem("totalScore",totalScore) ;
     },
     
     disableRoundButtons: function(data)
@@ -364,7 +360,7 @@ export default {
     }
   },
   created() {
-    this.getConversation("Fun fact about Italy");
+    //this.getConversation("Fun fact about Italy");
     this.setFlagsPerRound();
     this.setActiveRound(this.roundNum);
     this.isBntDisabled = true;

@@ -49,6 +49,7 @@ export default {
             return array;
         },
         updateRoundNumber(totalScore){
+            console.log(totalScore);
             this.roundNumber += 1;
             this.totalScore=totalScore;
         }
