@@ -6,8 +6,8 @@
 </template>
 
 <script>
+import flagsJson from "@/assets/flags.json";
 export default {
-  name: "StartGame"
   name: "StartGame",
   props: { msg: String },
   emits: ["beginGame"],

@@ -11,7 +11,7 @@
       </div>
     </div>
   </div>
-  <!-- <p id="AIresponse">AI Response</p> -->
+  <p id="AIresponse">{{aiResponse}}</p>
   <button class="btn btn-primary" @click="moveToNextRound()">
     <!-- :disabled="ifNoSelectionMade"> -->
     Next Round
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="js">
-// const imagesFolder = "./assets/flag-images/";
+//const imagesFolder = "./assets/flag-images/";
 export default {
   name: "GameRound",
   props: ["flags", "roundNum"],
@@ -51,10 +51,7 @@ export default {
         isRoundAnswer:Boolean,
         showCountryName:Boolean,
         classValidation:String
-      },
-      sessionModel:{
-        score:Number
-      },
+      }, 
       aiResponse:"",
       totalScore:0
     };
@@ -68,18 +65,18 @@ export default {
     setFlagsPerRound: function () {
       this.flags.forEach((flagData) => {
         let flag = JSON.parse(JSON.stringify(flagData));
-        console.log(flag.id);
+        //console.log(flag.id);
         let element = [];
         switch (flag.id) {
           case 1:
           case 2:
           case 3:
           case 4: {
-            this.round1.push(element);
+            this.round1.push(flag);
             this.answerRound1 = this.getRandomInt(1, 5);
             this.correctRound1Answer = this.round1.find(
               (e) => e.id === this.answerRound1.id
-            );
+            ); 
             break;
           }
           case 5:
@@ -88,11 +85,11 @@ export default {
           case 8: {
             this.round2.push(element);
             this.answerRound2 = this.getRandomInt(5, 9);
-            let correctAnswer = this.round2.find(
+            this.correctRound2Answer = this.round2.find(
               (e) => e.id === this.answerRound2.id
             );
 
-            console.log(correctAnswer)
+            //console.log(correctAnswer)
 
             break;
           }
@@ -184,9 +181,11 @@ export default {
             answerFlag1.classValidation = "img-valid";
             //TODO ....
             // call AI
-            //var aiResponseData=this.getConversation(answerFlag1.apiKeyWord); 
+            this.aiResponse=this.getConversation(answerFlag1.apiKeyWord); 
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag1.classValidation = "img-invalid";
@@ -200,8 +199,11 @@ export default {
             answerFlag2.classValidation = "img-valid";
             //TODO ....
             // call AI
+            this.aiResponse=this.getConversation(answerFlag2.apiKeyWord);
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag2.classValidation = "img-invalid";
@@ -215,8 +217,11 @@ export default {
             answerFlag3.classValidation = "img-valid";
             //TODO ....
             // call AI
+            this.aiResponse=this.getConversation(answerFlag3.apiKeyWord);
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag3.classValidation = "img-invalid";
@@ -230,8 +235,11 @@ export default {
             answerFlag4.classValidation = "img-valid";
             //TODO ....
             // call AI 
+            this.aiResponse=this.getConversation(answerFlag4.apiKeyWord);
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag4.classValidation = "img-invalid";
@@ -245,7 +253,9 @@ export default {
             answerFlag5.classValidation = "img-valid";
             //TODO ....
             // call AI         
-            // set session score = 2 an
+            this.aiResponse=this.getConversation(answerFlag5.apiKeyWord);
+            //set session
+            this.setSession();
           } else {
            
             answerFlag5.classValidation = "img-invalid";
@@ -265,11 +275,10 @@ export default {
       this.$emit('nextBtnClicked')
       // TODO gianmarco....
     },
-    getConversation:async function(message) {
-      console.log("Inside AI method");
-      var accessToken = "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";
+    getConversation:async function(message) { 
+      var accessToken = "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";
       var body = {
-          model: "text-davinci-002",
+          model: "text-davinci-003",
           prompt: "".concat(message),
       };
       const axios=require("axios");
@@ -278,15 +287,12 @@ export default {
               authorization: "Bearer ".concat(accessToken),
               "Content-Type": "application/json",
           },
-      });
-      console.log(res.data);
-      return res.data;
+      }); 
+      this.aiResponse=res.data.choices[0].text;
+      return res.data.choices[0].text;
     },
-    setSession:function(flag){
-      if(flag.isRoundAnswer===true){
-        this.totalScore=this.totalScore+20;
-      }
-       
+    setSession:function(){ 
+        this.totalScore=this.totalScore+20;  
     }
     
   },
