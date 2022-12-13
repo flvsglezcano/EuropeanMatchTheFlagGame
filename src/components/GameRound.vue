@@ -18,7 +18,7 @@
 </template>
 
 <script lang="js">
-// const imagesFolder = "./assets/flag-images/";
+const imagesFolder = "./assets/flag-images/";
 export default {
   name: "GameRound",
   props: ["flags", "roundNum"],
@@ -28,19 +28,14 @@ export default {
       nextRound: Number,
       round1: [],
       answerRound1: Number,
-      correctRound1Answer: Number,
       round2: [],
       answerRound2: Number,
-      correctRound2Answer: Number,
       round3: [],
       answerRound3: Number,
-      correctRound3Answer: Number,
       round4: [],
       answerRound4: Number,
-      correctRound4Answer: Number,
       round5: [],
       answerRound5: Number,
-      correctRound5Answer: Number,
       flagModel:{
         id: Number,
         country: String,
@@ -63,6 +58,7 @@ export default {
     setFlagsPerRound: function () {
       this.flags.forEach((flagData) => {
         let flag = JSON.parse(JSON.stringify(flagData));
+        console.log(flag)
         console.log(flag.id);
         let element = this.flagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.imagePath}`, false, false,"", false);
         switch (flag.id) {
@@ -72,7 +68,7 @@ export default {
           case 4: {
             this.round1.push(element);
             this.answerRound1 = this.getRandomInt(1, 5);
-            this.correctRound1Answer = this.round1.find(
+            let correctAnswer = this.round1.find(
               (e) => e.id === this.answerRound1.id
             );
             correctAnswer.isRoundAnswer = true;
@@ -96,7 +92,7 @@ export default {
           case 12: {
             this.round3.push(element);
             this.answerRound3 = this.getRandomInt(9, 13);
-            this.correctRound3sAnswer = this.round3.find(
+            let correctAnswer = this.round3.find(
               (e) => e.id === this.answerRound3.id
             );
             correctAnswer.isRoundAnswer = true;
@@ -108,7 +104,7 @@ export default {
           case 16: {
             this.round4.push(element);
             this.answerRound4 = this.getRandomInt(13, 17);
-            this.correctRound4Answer = this.round4.find(
+            let correctAnswer = this.round4.find(
               (e) => e.id === this.answerRound4.id
             );
             correctAnswer.isRoundAnswer = true;
@@ -120,9 +116,10 @@ export default {
           case 20: {
             this.round5.push(element);
             this.answerRound5 = this.getRandomInt(17, 21);
-            this.correctRound5Answer = this.round5.find(
+            let correctAnswer = this.round5.find(
               (e) => e.id === this.answerRound5.id
             );
+            correctAnswer.isRoundAnswer = true;
             break;
           }
           default:
