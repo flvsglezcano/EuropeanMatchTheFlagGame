@@ -1,4 +1,5 @@
 <template>
+  <h1> choose a flag </h1>
   <div class="container game-box">
     <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
       <div class="col-6">
@@ -119,8 +120,7 @@ export default {
             let correctAnswer = this.round1.find(
               (e) => e.id === this.answerRound5.id
             );
-            correctAnswer.setActiveRound(true);
-
+            correctAnswer.isRoundAnswer = true;
             break;
           }
           default:
@@ -237,25 +237,31 @@ export default {
             answerFlag5.showCountryName = true;
             answerFlag5.classValidation = "img-valid";
             //TODO ....
-            // call AI
-            // disable all buttons
-            // enable "Next button"
+            // call AI         
+            // set session score = 2
           } else {
-            //TODO ....
+           
             answerFlag5.classValidation = "img-invalid";
+             //TODO ....
+             //
           }
+           // disable all buttons
+           // enable "Next button"
+            //  save session data
+            // set session score = 0
+
           break;
         }
       }
     },
     moveToNextRound: function (next) {
       this.setActiveRound(next);
+      // TODO; ....
     },
 
 
   },
   create() {
-
     this.setFlagsPerRound();
     this.setActiveRound(1);
   },
