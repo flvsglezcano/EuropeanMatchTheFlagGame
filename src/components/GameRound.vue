@@ -2,13 +2,13 @@
   <h1>choose a flag</h1>
   <div class="container game-box">
     <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
-      <div class="col-6">
+      <div class="col-6" :id="flag.id">
         <button
           @click="checkAnswer(flag.id)"
-          class="flagBtn"
+          class=""
           :disabled="flag.isBntDisabled"
         >
-          <img :src="flag.imagePath" class="flag.classValidation" />
+          <img :src="flag.imagePath" :class="flag.classValidation" />
         </button>
         <!-- <p>Game Time:</p>
         <span v-show="flag.showCountryName">{{ flag.country }}</span> -->
@@ -116,10 +116,10 @@ export default {
         this.flagData.push(element);
       });
       this.round1 = this.flagData.slice(0, 4);
-      this.round2 = this.flagData.slice(4, 7);
-      this.round3 = this.flagData.slice(8, 11);
-      this.round4 = this.flagData.slice(12, 15);
-      this.round5 = this.flagData.slice(16, 19);
+      this.round2 = this.flagData.slice(4, 8);
+      this.round3 = this.flagData.slice(8, 12);
+      this.round4 = this.flagData.slice(12, 16);
+      this.round5 = this.flagData.slice(16, 20);
 
       console.log("Round1");
       console.log(this.round1);
@@ -212,25 +212,36 @@ export default {
       }
     },
     checkAnswer: function (id) {
+      console.log("button clicked");
+      console.log(this.activeRoundNumber);
       switch (this.activeRoundNumber) {
         case 1: {
           let answerFlag1 = this.round1.find((e) => e.id === id);
-          if (answerFlag1.isRoundAnswer === true) {
+          console.log(answerFlag1);
+          if (answerFlag1.isRoundAnswer === true) { 
             answerFlag1.showCountryName = true;
             answerFlag1.classValidation = "img-valid";
+            this.disableRoundButtons(this.round1);
+           this.isBntDisabled= false;
             //TODO ....
             // call AI
             this.aiResponse=this.getConversation(answerFlag1.apiKeyWord); 
             // disable all buttons
+
             // enable "Next button"
             //set session
             this.setSession();
           } else {
             //TODO ....
             answerFlag1.classValidation = "img-invalid";
+            this.disableRoundButtons(this.round1);
+           this.isBntDisabled= false;
           }
           this.disableRoundButtons(this.round1);
            this.isBntDisabled= false;
+           //this.round1.forEach((flag)=>{
+            //$('#'+flag.id).attr('disabled','disabled');
+           //})
           break;
         }
         case 2: {
@@ -355,7 +366,7 @@ export default {
   created() {
     this.getConversation("Fun fact about Italy");
     this.setFlagsPerRound();
-    this.setActiveRound(1);
+    this.setActiveRound(this.roundNum);
     this.isBntDisabled = true;
   },
 };
