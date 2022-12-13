@@ -6,12 +6,13 @@
         {{gameResults}}
     </div>
     <br/>
-    <button class="btn btn-primary" @click="clearGameSession()">Play Again?</button>
+    <router-link :to="{ name: 'StartGame' }" class="btn btn-primary" @click="clearGameSession()">Play Again?</router-link>
 </template>
   
 <script>
 export default {
     name: 'GameEnd',
+    props:["results"],
     data(){
         return {
             gameResults: "5/5"
@@ -20,8 +21,7 @@ export default {
     methods:{
         clearGameSession(){
             //Clear Game Session and route to StartGame componenet
-
-            this.$emit('newGame');
+            this.gameResults = "0/5"
         }
     }
 }
@@ -29,6 +29,5 @@ export default {
   
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>
   
