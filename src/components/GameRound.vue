@@ -8,14 +8,14 @@
           class="flagBtn"
           :disabled="flag.isBntDisabled"
         >
-          <img src="flag.imagePath" class="flag.classValidation" />
+          <img :src="flag.imagePath" :class="flag.classValidation" />
         </button>
-        <!-- <p>Game Time:</p>
-        <span v-show="flag.showCountryName">{{ flag.country }}</span> -->
+        <p>Game Time:</p>
+        <span v-show="flag.showCountryName">{{ flag.country }}</span>
       </div>
     </div>
   </div>
-  <!-- <p id="AIresponse">AI Response</p> -->
+  <p id="AIresponse">AI Response</p>
   <button
     class="btn btn-primary"
     @click="moveToNextRound()"
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="js">
-const imagesFolder = "./assets/flag-images/";
+const imagesFolder = "../../assets/flags-images/";
 class flagModel {
     constructor (id,
         country,
@@ -70,8 +70,8 @@ export default {
       answerRound4: Number,
       round5: [],
       answerRound5: Number,
-
       isBntDisabled:Boolean
+
     };
   },
   computed:{
@@ -82,88 +82,66 @@ export default {
   methods: {
     setflagModel: function (
       id,
-       country,
-        apiKeyWord,
-        imagePath,
-        isRoundAnswer,
-        showCountryName,
-        classValidation,
-        isBtnDisabled)
-        {
-          return new flagModel(id,
-            country,
+      country,
+      apiKeyWord,
+      imagePath,
+      isRoundAnswer,
+      showCountryName,
+      classValidation,
+      isBtnDisabled) {
+      return new flagModel(id,
+        country,
         apiKeyWord,
         imagePath,
         isRoundAnswer,
         showCountryName,
         classValidation,
         isBtnDisabled
-            )
-
-      },
+      )
+    },
     setFlagsPerRound: function () {
-      console.log(this.flags);
       this.flags.forEach((flagJson) => {
         let flag = JSON.parse(JSON.stringify(flagJson));
-        console.log(flag)
-        console.log(flag.id);
-        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.imagePath}`, false, false,"", false);
-       this.flagData.push(element);
+        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.image}`, false, false, "", false);
+        console.log(element)
+        this.flagData.push(element);
       });
-         this.round1= this.flagData.slice(0, 3);
-         this.round2= this.flagData.slice(4, 7);
-         this.round3= this.flagData.slice(8, 11);
-         this.round4= this.flagData.slice(12,15);
-         this.round5= this.flagData.slice(16, 19);     
-        
-            
-             console.log("r1 "+ this.round1);
-            this.answerRound1 = this.getRandomInt(1, 5);
-            console.log(this.answerRound1);
-            let correctAnswer1 = this.round1.find(
-              (e) => e.id === this.answerRound1
-            );
-            console.log(correctAnswer1);
-            correctAnswer1.setRoundAnswer(true);
-            console.log(correctAnswer1.isRoundAnswer);
-           
-            
-            console.log("r2 "+ this.round2);
-            this.answerRound2 = this.getRandomInt(5, 9);
-            console.log(this.answerRound2);
-            let correctAnswer2 = this.round2.find(
-              (e) => e.id === this.answerRound2
-            );
-            correctAnswer2.setRoundAnswer(true);
-            
-           
-            console.log("r3 "+ this.round3);
-            this.answerRound3 = this.getRandomInt(9, 13);
-            console.log("random " + this.answerRound3);  
-            let correctAnswer3 = this.round3.find(
-              (e) => e.id === this.answerRound3
-            );
-            correctAnswer3.setRoundAnswer(true);
-          
-            
-            console.log("r4 "+ this.round4);
-            this.answerRound4 = this.getRandomInt(13, 17);
-            console.log("random " + this.answerRound4);  
-            let correctAnswer4 = this.round4.find(
-              (e) => e.id === this.answerRound4
-            );
-            correctAnswer4.setRoundAnswer(true);
-           
-          
-           
-            console.log("r5 "+ this.round5);
-            this.answerRound5 = this.getRandomInt(17, 21);
-            console.log("random " + this.answerRound5);  
-            let correctAnswer5 = this.round5.find(
-              (e) => e.id === this.answerRound5
-            );
-            correctAnswer5.setRoundAnswer(true);
-            
+
+      this.round1 = this.flagData.slice(0, 4);
+      this.round2 = this.flagData.slice(4, 8);
+      this.round3 = this.flagData.slice(8, 12);
+      this.round4 = this.flagData.slice(12, 16);
+      this.round5 = this.flagData.slice(16, 20);
+
+      this.answerRound1 = this.getRandomInt(1, 4);
+      let correctAnswer1 = this.round1.filter(
+        (e) => e.id === this.answerRound1
+      );
+      correctAnswer1.isRoundAnswer = true;
+
+      this.answerRound2 = this.getRandomInt(5, 8);      
+      let correctAnswer2 = this.round2.filter(
+        (e) => e.id === this.answerRound2
+      );
+      correctAnswer2.isRoundAnswer = true;
+
+      this.answerRound3 = this.getRandomInt(9, 12);
+      let correctAnswer3 = this.round3.filter(
+        (e) => e.id === this.answerRound3
+      );
+      correctAnswer3.isRoundAnswer = true;
+
+      this.answerRound4 = this.getRandomInt(13, 16);
+      let correctAnswer4 = this.round4.filter(
+        (e) => e.id === this.answerRound4
+      );
+      correctAnswer4.isRoundAnswer = true;
+
+      this.answerRound5 = this.getRandomInt(16, 20);
+      let correctAnswer5 = this.round5.filter(
+        (e) => e.id === this.answerRound5
+      );
+      correctAnswer5.isRoundAnswer = true;
     },
     getRandomInt: function (minValue, maxValue) {
       minValue = Math.ceil(minValue);
