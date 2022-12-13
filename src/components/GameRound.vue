@@ -17,6 +17,7 @@
     </button>
 </template>
 <script lang="js">
+//const imagesFolder = "./assets/flag-images/";
 export default {
   name: "GameRound",
   props: ["flagData"],
