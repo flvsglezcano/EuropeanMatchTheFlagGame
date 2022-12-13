@@ -27,7 +27,7 @@
 </template>
 
 <script lang="js">
-const imagesFolder = "../../assets/flags-images/";
+
 class flagModel {
     constructor (id,
         country,
@@ -106,7 +106,7 @@ export default {
         let flag = JSON.parse(JSON.stringify(flagJson));
         console.log(flag)
         console.log(flag.id);
-        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.imagePath}`, false, false, "", false);
+        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, require(`../assets/flags-images/${flag.image}`), false, false, "", false);
         this.flagData.push(element);
       });
 
@@ -116,38 +116,39 @@ export default {
       this.round4 = this.flagData.slice(12, 16);
       this.round5 = this.flagData.slice(16, 20);
 
-      this.answerRound1 = this.getRandomInt(1, 4);
+      this.answerRound1 = this.getRandomInt(this.round1);
       let correctAnswer1 = this.round1.filter(
         (e) => e.id === this.answerRound1
       );
       correctAnswer1.isRoundAnswer = true;
 
-      this.answerRound2 = this.getRandomInt(5, 8);      
+      this.answerRound2 = this.getRandomInt(this.round2);
       let correctAnswer2 = this.round2.filter(
         (e) => e.id === this.answerRound2
       );
       correctAnswer2.isRoundAnswer = true;
 
-      this.answerRound3 = this.getRandomInt(9, 12);
+      this.answerRound3 = this.getRandomInt(this.round3);
       let correctAnswer3 = this.round3.filter(
         (e) => e.id === this.answerRound3
       );
       correctAnswer3.isRoundAnswer = true;
 
-      this.answerRound4 = this.getRandomInt(13, 16);
+      this.answerRound4 = this.getRandomInt(this.round4);
       let correctAnswer4 = this.round4.filter(
         (e) => e.id === this.answerRound4
       );
       correctAnswer4.isRoundAnswer = true;
 
-      this.answerRound5 = this.getRandomInt(16, 20);
+      this.answerRound5 = this.getRandomInt(this.round5);
       let correctAnswer5 = this.round5.filter(
         (e) => e.id === this.answerRound5
       );
       correctAnswer5.isRoundAnswer = true;
     },
     getRandomInt: function (round) {
-      let ids=round.map(a=>a.id);
+      console.log(round);
+      let ids= round.map (a=>a.id);
       //var minValue = Math.min(ids);
       //var maxValue = Math.max(ids);
       return ids[Math.floor(Math.random() * ids.length)];
@@ -297,7 +298,6 @@ export default {
         }
       }
     },
-
     moveToNextRound: function () {
       this.setActiveRound(this.roundNum);
       this.$emit('nextBtnClicked')
