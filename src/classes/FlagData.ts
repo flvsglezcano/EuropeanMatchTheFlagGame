@@ -12,7 +12,7 @@ export default class FlagData {
     imagePath: string
   ) {
     this.id = id;
-    this.country;
+    this.country = country;
     this.apiKeyWord = apiKeyWord;
     this.imagePath = imagePath;
   }

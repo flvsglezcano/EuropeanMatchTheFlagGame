@@ -1,12 +1,14 @@
 <template>
   <div>
     <h1>Match the Flag to the European Country!</h1>
-    <button class="btn btn-primary" @click="$emit('beginGame')">Start Game</button>
+    <!-- <button class="btn btn-primary" @click="$emit('beginGame')">Start Game</button> -->
+    <router-link class="btn btn-primary" :to="{ name: 'GameRound', props: {flagData: flags} }">Start Game</router-link>
+
   </div>
   
 </template>
 
-<script lang="ts">
+<script>
 import axios from 'axios';
 import * as flagsJson from "@/assets/flags.json";
 import FlagData from "@/classes/FlagData";
@@ -64,7 +66,7 @@ export default {
   },
  
   created() {
-    this.getFlags();
+    // this.getFlags();
     this.shuffle(JSON.parse(JSON.stringify(this.flags)));
     this.getConversation("Fun fact about Italy");
   },

@@ -1,7 +1,7 @@
 <template>
-  <div class="container game-box" key:roundNumber  v-bind="activeRoundFlags" >
+  <div class="container game-box"  >
     
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-6">
         <button >
           <img src="@/assets/flags-images/Cyprus.png" class="img-invalid" />
@@ -17,9 +17,11 @@
       <div class="col-6">
         <img src="@/assets/flags-images/Norway.png" />
       </div>
-    </div>
+    </div> -->
+
+      <button class="btn btn-primary" >Next Round</button>
+
   </div>
-  <button class="btn btn-primary" :disabled="ifNoSelectionMade()">Next Round</button>
 </template>
 <script>
 export default {
@@ -29,9 +31,9 @@ export default {
     return {
       round1: [],
       answerRound1: "",
-      roundNumber:Number,
-       activeRoundFlags:[],
-       activeRoundAnswer: "",
+      roundNumber: Number,
+      activeRoundFlags: [],
+      activeRoundAnswer: "",
       round2: [],
       round3: [],
       round4: [],
@@ -64,15 +66,15 @@ export default {
     maxValue = Math.floor(maxValue);
     return Math.floor(Math.random() * (maxValue -minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
   },
-  ifNoSelectionMade(){
-            return true;
-        },
-        updateSession(round){
-            if(round.isCorrectAnswer){
-                this.totalScore=this.totalScore+20;
-            }
-        }
-    
+  ifNoSelectionMade() {
+    return true;
+  },
+  updateSession(round) {
+    if (round.isCorrectAnswer) {
+      this.totalScore = this.totalScore + 20;
+    }
+  }
+
 };
 </script>
 

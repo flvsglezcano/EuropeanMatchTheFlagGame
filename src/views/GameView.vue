@@ -11,7 +11,7 @@
 // import GameRound from './components/GameRound.vue';
 
 export default {
-  name: 'App',
+  name: 'GameView',
   // components: {
   //   'StartGame': StartGame,
   //   'GameEnd': GameEnd,
