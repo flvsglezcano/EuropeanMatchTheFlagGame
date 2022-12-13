@@ -1,5 +1,7 @@
+<!-- Will dynamically render StartGame, "Rounds", or the GameEnd components -->
+
 <template>
-    <router-view :flagData="flags"/>
+  <component :is="currentComponent" @beginGame="changeComponent('GameRound')" @newGame="changeComponent('StartGame')"></component>
 </template>
 
 <script>
