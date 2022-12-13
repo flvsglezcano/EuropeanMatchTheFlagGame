@@ -1,7 +1,7 @@
 <template>
   <div class="container game-box"  >
     
-    <!-- <div class="row">
+    <div class="row">
       <div class="col-6">
         <button >
           <img src="@/assets/flags-images/Cyprus.png" class="img-invalid" />
@@ -17,7 +17,7 @@
       <div class="col-6">
         <img src="@/assets/flags-images/Norway.png" />
       </div>
-    </div> -->
+    </div>
 
     <router-link class="btn btn-primary" :to="{ name: 'GameRound5', props: {flagData: flags} }">Next Round</router-link>
 
