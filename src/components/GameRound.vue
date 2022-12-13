@@ -6,7 +6,7 @@
         <button
           @click="checkAnswer(flag.id)"
           class=""
-          :disabled="flag.isBntDisabled"
+          :disabled="flag.isBtnDisabled"
         >
           <img :src="flag.imagePath" :class="flag.classValidation" />
         </button>
@@ -221,7 +221,7 @@ export default {
             answerFlag1.showCountryName = true;
             answerFlag1.classValidation = "img-valid";
             this.disableRoundButtons(this.round1);
-           this.isBntDisabled= false;
+           this.isBtnDisabled= false;
             //TODO ....
             // call AI
             this.aiResponse=this.getConversation(answerFlag1.apiKeyWord); 
@@ -235,7 +235,7 @@ export default {
             answerFlag1.showTryAgainPrompt = true;
             answerFlag1.classValidation = "img-invalid";
             this.disableRoundButtons(this.round1);
-           this.isBntDisabled= false;
+           this.isBtnDisabled= false;
           }
           this.disableRoundButtons(this.round1);
           this.isNextRoundBtnDisabled= false;
@@ -376,7 +376,7 @@ export default {
   created() {
     this.setFlagsPerRound();
     this.setActiveRound(this.roundNum);
-    this.isBntDisabled = true;
+    this.isBtnDisabled = true;
   },
 };
 </script>
