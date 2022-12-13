@@ -6,13 +6,16 @@
           <img src="flag.imagePath" class="flag.classValidation" />
         </button>
         <p>Game Time:</p>
-<span v-show="flag.showCountryName">{{ flag.country }}</span>
+        <span v-show="flag.showCountryName">{{ flag.country }}</span>
       </div>
-    </div>
-        <button class="btn btn-primary" :disabled="ifNoSelectionMade()">Next Round</button>
+    </div>    
   </div>
+  <button class="btn btn-primary" > 
+    <!-- :disabled="ifNoSelectionMade"> -->
+      Next Round
+    </button>
 </template>
-<script lang="ts">
+<script lang="js">
 export default {
   name: "GameRound",
   props: ["flagData"],
@@ -31,6 +34,11 @@ export default {
       round5: [],
       answerRound5: Number,
     };
+  },
+  computed:{
+    ifNoSelectionMade() {
+      return true;
+    },
   },
   methods: {
     setFlagsPerRound: function () {
@@ -58,7 +66,7 @@ export default {
               (e) => e.id === this.answerRound2.id
             );
             correctAnswer.setActiveRound(true);
-           
+
             break;
           }
           case 9:
@@ -71,7 +79,7 @@ export default {
               (e) => e.id === this.answerRound3.id
             );
             correctAnswer.setActiveRound(true);
-            
+
             break;
           }
           case 13:
@@ -84,7 +92,7 @@ export default {
               (e) => e.id === this.answerRound4.id
             );
             correctAnswer.setActiveRound(true);
-           
+
             break;
           }
           case 17:
@@ -97,7 +105,7 @@ export default {
               (e) => e.id === this.answerRound5.id
             );
             correctAnswer.setActiveRound(true);
-            
+
             break;
           }
           default:
@@ -225,13 +233,11 @@ export default {
         }
       }
     },
-    moveToNextRound: function(next)
-    {
-        this.setActiveRound(next);
-        ifNoSelectionMade(){
-            return true;
-        }
-    }
+    moveToNextRound: function (next) {
+      this.setActiveRound(next);
+    },
+
+    
   },
   create() {
     this.setFlagsPerRound();
