@@ -6,7 +6,8 @@
         {{gameResults}}
     </div>
     <br/>
-    <button class="btn btn-primary" @click="clearGameSession()">Play Again?</button>
+    <router-link class="btn btn-primary" :to="{ name: 'StartGame', props: {flagData: flags} }"  @click="clearGameSession()">Play Again?</router-link>
+
 </template>
   
 <script>

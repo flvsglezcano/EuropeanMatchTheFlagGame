@@ -19,13 +19,13 @@
       </div>
     </div> -->
 
-      <button class="btn btn-primary" >Next Round</button>
+    <router-link class="btn btn-primary" :to="{ name: 'GameRound4', props: {flagData: flags} }">Next Round</router-link>
 
   </div>
 </template>
 <script>
 export default {
-  name: "GameRound",
+  name: "GameRound3",
   props: ["flagData"],
   data() {
     return {

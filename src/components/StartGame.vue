@@ -2,7 +2,7 @@
   <div>
     <h1>Match the Flag to the European Country!</h1>
     <!-- <button class="btn btn-primary" @click="$emit('beginGame')">Start Game</button> -->
-    <router-link class="btn btn-primary" :to="{ name: 'GameRound', props: {flagData: flags} }">Start Game</router-link>
+    <router-link class="btn btn-primary" :to="{ name: 'GameRound1', props: {flagData: flags} }">Start Game</router-link>
 
   </div>
   
