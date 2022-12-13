@@ -15,7 +15,7 @@ export default {
     props:["results"],
     data(){
         return {
-            gameResults: "5/5"
+            gameResults: this.results+"/100"
         }
     },
     methods:{

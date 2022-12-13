@@ -4,7 +4,7 @@
             <GameRound :key="roundNumber" :flags="flags" :roundNum="roundNumber" @nextBtnClicked="updateRoundNumber()" />
         </div>
         <div id="gameEndSection" v-else>
-            <GameEnd :results="1" />
+            <GameEnd :results="totalScore" />
         </div>
 </template>
   
@@ -22,7 +22,8 @@ export default {
     data() {
         return {
             flags: [],
-            roundNumber: 1
+            roundNumber: 1,
+            totalScore:0
         };
     },
     methods: {
@@ -47,8 +48,9 @@ export default {
             }
             return array;
         },
-        updateRoundNumber(){
+        updateRoundNumber(totalScore){
             this.roundNumber += 1;
+            this.totalScore=totalScore;
         }
     },
     created() {

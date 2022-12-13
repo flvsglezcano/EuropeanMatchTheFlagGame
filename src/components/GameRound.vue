@@ -70,8 +70,10 @@ export default {
       answerRound4: Number,
       round5: [],
       answerRound5: Number,
-      isBntDisabled:Boolean
 
+      isBntDisabled:Boolean, 
+      aiResponse:"",
+      totalScore:0
     };
   },
   computed:{
@@ -102,8 +104,9 @@ export default {
     setFlagsPerRound: function () {
       this.flags.forEach((flagJson) => {
         let flag = JSON.parse(JSON.stringify(flagJson));
-        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.image}`, false, false, "", false);
-        console.log(element)
+        console.log(flag)
+        console.log(flag.id);
+        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.imagePath}`, false, false, "", false);
         this.flagData.push(element);
       });
 
@@ -143,10 +146,12 @@ export default {
       );
       correctAnswer5.isRoundAnswer = true;
     },
-    getRandomInt: function (minValue, maxValue) {
-      minValue = Math.ceil(minValue);
-      maxValue = Math.floor(maxValue);
-      return Math.floor(Math.random() * (maxValue - minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
+    getRandomInt: function (round) {
+      let ids=round.map(a=>a.id);
+      //var minValue = Math.min(ids);
+      //var maxValue = Math.max(ids);
+      return ids[Math.floor(Math.random() * ids.length)];
+      //return Math.floor(Math.random() * (maxValue - minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
     },
     setActiveRound: function (round) {
       switch (round) {
@@ -193,8 +198,11 @@ export default {
             answerFlag1.classValidation = "img-valid";
             //TODO ....
             // call AI
+            this.aiResponse=this.getConversation(answerFlag1.apiKeyWord); 
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag1.classValidation = "img-invalid";
@@ -210,8 +218,11 @@ export default {
             answerFlag2.classValidation = "img-valid";
             //TODO ....
             // call AI
+            this.aiResponse=this.getConversation(answerFlag2.apiKeyWord);
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag2.classValidation = "img-invalid";
@@ -228,8 +239,11 @@ export default {
             answerFlag3.classValidation = "img-valid";
             //TODO ....
             // call AI
+            this.aiResponse=this.getConversation(answerFlag3.apiKeyWord);
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag3.classValidation = "img-invalid";
@@ -245,9 +259,12 @@ export default {
             answerFlag4.showCountryName = true;
             answerFlag4.classValidation = "img-valid";
             //TODO ....
-            // call AI
+            // call AI 
+            this.aiResponse=this.getConversation(answerFlag4.apiKeyWord);
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag4.classValidation = "img-invalid";
@@ -263,8 +280,10 @@ export default {
             answerFlag5.showCountryName = true;
             answerFlag5.classValidation = "img-valid";
             //TODO ....
-            // call AI
-            // set session score = 2 an
+            // call AI         
+            this.aiResponse=this.getConversation(answerFlag5.apiKeyWord);
+            //set session
+            this.setSession();
           } else {
 
             answerFlag5.classValidation = "img-invalid";
@@ -284,6 +303,26 @@ export default {
       this.$emit('nextBtnClicked')
       // TODO gianmarco....
     },
+    getConversation:async function(message) { 
+      var accessToken = "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";
+      var body = {
+          model: "text-davinci-003",
+          prompt: "".concat(message),
+      };
+      const axios=require("axios");
+      var res = await axios.post('https://api.openai.com/v1/completions', body, {
+          headers: {
+              authorization: "Bearer ".concat(accessToken),
+              "Content-Type": "application/json",
+          },
+      }); 
+      this.aiResponse=res.data.choices[0].text;
+      return res.data.choices[0].text;
+    },
+    setSession:function(){ 
+        this.totalScore=this.totalScore+20;  
+    },
+    
     disableRoundButtons: function(data)
     {
       data.forEach( element => {
@@ -292,6 +331,7 @@ export default {
     }
   },
   created() {
+    this.getConversation("Fun fact about Italy");
     this.setFlagsPerRound();
     this.setActiveRound(1);
     this.isBntDisabled = true;
