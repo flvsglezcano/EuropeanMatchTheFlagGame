@@ -106,6 +106,10 @@ export default {
         let flag = JSON.parse(JSON.stringify(flagJson));
         console.log(flag)
         console.log(flag.id);
+        var fullpath=`${imagesFolder}${flag.image}`;
+        console.log("fullpath");
+        console.log(fullpath);
+        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, require(`../assets/flags-images/${flag.image}`) , false, false, "", false);
         let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, require(`../assets/flags-images/${flag.image}`), false, false, "", false);
         this.flagData.push(element);
       });
