@@ -3,7 +3,7 @@
   <div class="container game-box">
     <div class="row" v-for="flag in activeRoundFlags" :key="flag.id">
       <div class="col-6">
-        <button @click="checkAnswer(flag.id)">
+        <button @click="checkAnswer(flag.id)" class="flagBtn" :disabled="flag.isBntDisabled">
           <img src="flag.imagePath" class="flag.classValidation" />
         </button>
         <!-- <p>Game Time:</p>
@@ -12,14 +12,13 @@
     </div>
   </div>
   <!-- <p id="AIresponse">AI Response</p> -->
-  <button class="btn btn-primary" @click="moveToNextRound()">
-    <!-- :disabled="ifNoSelectionMade"> -->
+  <button class="btn btn-primary" @click="moveToNextRound()" id="nextBtn" :disabled="inNextBtnDisable">
     Next Round
   </button>
 </template>
 
 <script lang="js">
-// const imagesFolder = "./assets/flag-images/";
+const imagesFolder = "./assets/flag-images/";
 export default {
   name: "GameRound",
   props: ["flags", "roundNum"],
@@ -29,19 +28,14 @@ export default {
       nextRound: Number,
       round1: [],
       answerRound1: Number,
-      correctRound1Answer: Number,
       round2: [],
       answerRound2: Number,
-      correctRound2Answer: Number,
       round3: [],
       answerRound3: Number,
-      correctRound3Answer: Number,
       round4: [],
       answerRound4: Number,
-      correctRound4Answer: Number,
       round5: [],
       answerRound5: Number,
-      correctRound5Answer: Number,
       flagModel:{
         id: Number,
         country: String,
@@ -49,8 +43,10 @@ export default {
         imagePath: String,
         isRoundAnswer:Boolean,
         showCountryName:Boolean,
-        classValidation:String
-      }
+        classValidation:String,
+        isBtnDisabled: Boolean
+      },
+      isBntDisabled:Boolean
     };
   },
   computed:{
@@ -62,8 +58,10 @@ export default {
     setFlagsPerRound: function () {
       this.flags.forEach((flagData) => {
         let flag = JSON.parse(JSON.stringify(flagData));
+        console.log(flag)
         console.log(flag.id);
-        let element = [];
+        let element = this.flagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.imagePath}`, false, false,"", false);
+        console.log(element)
         switch (flag.id) {
           case 1:
           case 2:
@@ -71,9 +69,10 @@ export default {
           case 4: {
             this.round1.push(element);
             this.answerRound1 = this.getRandomInt(1, 5);
-            this.correctRound1Answer = this.round1.find(
+            let correctAnswer = this.round1.find(
               (e) => e.id === this.answerRound1.id
             );
+            correctAnswer.isRoundAnswer = true;
             break;
           }
           case 5:
@@ -85,9 +84,7 @@ export default {
             let correctAnswer = this.round2.find(
               (e) => e.id === this.answerRound2.id
             );
-
-            console.log(correctAnswer)
-
+            correctAnswer.isRoundAnswer = true;
             break;
           }
           case 9:
@@ -96,9 +93,10 @@ export default {
           case 12: {
             this.round3.push(element);
             this.answerRound3 = this.getRandomInt(9, 13);
-            this.correctRound3sAnswer = this.round3.find(
+            let correctAnswer = this.round3.find(
               (e) => e.id === this.answerRound3.id
             );
+            correctAnswer.isRoundAnswer = true;
             break;
           }
           case 13:
@@ -107,9 +105,10 @@ export default {
           case 16: {
             this.round4.push(element);
             this.answerRound4 = this.getRandomInt(13, 17);
-            this.correctRound4Answer = this.round4.find(
+            let correctAnswer = this.round4.find(
               (e) => e.id === this.answerRound4.id
             );
+            correctAnswer.isRoundAnswer = true;
             break;
           }
           case 17:
@@ -118,9 +117,10 @@ export default {
           case 20: {
             this.round5.push(element);
             this.answerRound5 = this.getRandomInt(17, 21);
-            this.correctRound5Answer = this.round5.find(
+            let correctAnswer = this.round5.find(
               (e) => e.id === this.answerRound5.id
             );
+            correctAnswer.isRoundAnswer = true;
             break;
           }
           default:
@@ -184,6 +184,8 @@ export default {
             //TODO ....
             answerFlag1.classValidation = "img-invalid";
           }
+          this.disableRoundButtons(this.round1);
+           this.isBntDisabled= false;          
           break;
         }
         case 2: {
@@ -199,10 +201,13 @@ export default {
             //TODO ....
             answerFlag2.classValidation = "img-invalid";
           }
+          this.disableRoundButtons(this.round2);
+           this.isBntDisabled= false;          
+     
           break;
         }
         case 3: {
-          let answerFlag3 = this.round2.find((e) => e.id === id);
+          let answerFlag3 = this.round3.find((e) => e.id === id);
           if (answerFlag3.isRoundAnswer === true) {
             answerFlag3.showCountryName = true;
             answerFlag3.classValidation = "img-valid";
@@ -214,10 +219,13 @@ export default {
             //TODO ....
             answerFlag3.classValidation = "img-invalid";
           }
+          this.disableRoundButtons(this.round3);
+           this.isBntDisabled= false;          
+         
           break;
         }
         case 4: {
-          let answerFlag4 = this.round2.find((e) => e.id === id);
+          let answerFlag4 = this.round4.find((e) => e.id === id);
           if (answerFlag4.isRoundAnswer === true) {
             answerFlag4.showCountryName = true;
             answerFlag4.classValidation = "img-valid";
@@ -229,10 +237,13 @@ export default {
             //TODO ....
             answerFlag4.classValidation = "img-invalid";
           }
+          this.disableRoundButtons(this.round4);
+           this.isBntDisabled= false;          
+          
           break;
         }
         case 5: {
-          let answerFlag5 = this.round2.find((e) => e.id === id);
+          let answerFlag5 = this.round5.find((e) => e.id === id);
           if (answerFlag5.isRoundAnswer === true) {
             answerFlag5.showCountryName = true;
             answerFlag5.classValidation = "img-valid";
@@ -244,11 +255,10 @@ export default {
             answerFlag5.classValidation = "img-invalid";
              //TODO ....
              //set session score = 0 an
-          }
-           // disable all buttons  ip
-           // enable "Next button" ip
-           
-          
+
+          } 
+          this.disableRoundButtons(this.round5); 
+           this.isBntDisabled= false;          
           break;
         }
       }
@@ -258,10 +268,17 @@ export default {
       this.$emit('nextBtnClicked')
       // TODO gianmarco....
     },
+    disableRoundButtons: function(data)
+    {
+      data.forEach( element => {
+            element.isBtnDisabled = true;
+           })         
+    }
   },
   created() {
     this.setFlagsPerRound();
     this.setActiveRound(1);
+    this.isBntDisabled = true;
   },
 };
 </script>
