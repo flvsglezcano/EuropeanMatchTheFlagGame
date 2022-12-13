@@ -8,7 +8,7 @@
           class="flagBtn"
           :disabled="flag.isBntDisabled"
         >
-          <img :src="flag.imagePath" :class="flag.classValidation" />
+          <img :src="flag.imagePath" class="flag.classValidation" />
         </button>
         <p>Game Time:</p>
         <span v-show="flag.showCountryName">{{ flag.country }}</span>
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="js">
-const imagesFolder = "../../assets/flags-images/";
+const imagesFolder = "../assets/flags-images/";
 class flagModel {
     constructor (id,
         country,
@@ -57,6 +57,7 @@ export default {
   props: ["flags", "roundNum"],
   data() {
     return {
+      roundNumber:this.roundNum,
       flagData:[],
       activeRoundFlags: [],
       nextRound: Number,
@@ -70,8 +71,10 @@ export default {
       answerRound4: Number,
       round5: [],
       answerRound5: Number,
-      isBntDisabled:Boolean
 
+      isBntDisabled:Boolean, 
+      aiResponse:"",
+      totalScore:0
     };
   },
   computed:{
@@ -102,51 +105,73 @@ export default {
     setFlagsPerRound: function () {
       this.flags.forEach((flagJson) => {
         let flag = JSON.parse(JSON.stringify(flagJson));
-        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.image}`, false, false, "", false);
-        console.log(element)
+        console.log(flag)
+        console.log(flag.id);
+        var fullpath=`${imagesFolder}${flag.image}`;
+        console.log("fullpath");
+        console.log(fullpath);
+        let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, require(`../assets/flags-images/${flag.image}`) , false, false, "", false);
         this.flagData.push(element);
       });
-
       this.round1 = this.flagData.slice(0, 4);
       this.round2 = this.flagData.slice(4, 8);
       this.round3 = this.flagData.slice(8, 12);
       this.round4 = this.flagData.slice(12, 16);
       this.round5 = this.flagData.slice(16, 20);
 
-      this.answerRound1 = this.getRandomInt(1, 4);
-      let correctAnswer1 = this.round1.filter(
+      console.log("Round1");
+      console.log(this.round1);
+      this.answerRound1 = this.getRandomInt(this.round1); 
+      console.log("Answer Round1");
+      console.log(this.answerRound1);
+      let correctAnswer1 = this.round1.find(
         (e) => e.id === this.answerRound1
       );
-      correctAnswer1.isRoundAnswer = true;
+      console.log("correct answer1");
+      console.log(correctAnswer1);
+      correctAnswer1.setRoundAnswer(true);
+      console.log(correctAnswer1.isRoundAnswer);
 
-      this.answerRound2 = this.getRandomInt(5, 8);      
-      let correctAnswer2 = this.round2.filter(
+
+      console.log(this.round2);
+      this.answerRound2 = this.getRandomInt(this.round2); 
+      let correctAnswer2 = this.round2.find(
         (e) => e.id === this.answerRound2
       );
-      correctAnswer2.isRoundAnswer = true;
+      correctAnswer2.setRoundAnswer(true);
 
-      this.answerRound3 = this.getRandomInt(9, 12);
-      let correctAnswer3 = this.round3.filter(
+
+      console.log(this.round3);
+      this.answerRound3 = this.getRandomInt(this.round3); 
+      let correctAnswer3 = this.round3.find(
         (e) => e.id === this.answerRound3
       );
-      correctAnswer3.isRoundAnswer = true;
+      correctAnswer3.setRoundAnswer(true);
 
-      this.answerRound4 = this.getRandomInt(13, 16);
-      let correctAnswer4 = this.round4.filter(
+
+      console.log(this.round4);
+      this.answerRound4 = this.getRandomInt(this.round4); 
+      let correctAnswer4 = this.round4.find(
         (e) => e.id === this.answerRound4
       );
-      correctAnswer4.isRoundAnswer = true;
+      correctAnswer4.setRoundAnswer(true);
 
-      this.answerRound5 = this.getRandomInt(16, 20);
-      let correctAnswer5 = this.round5.filter(
+
+
+      console.log(this.round5);
+      this.answerRound5 = this.getRandomInt(this.round5); 
+      let correctAnswer5 = this.round5.find(
         (e) => e.id === this.answerRound5
       );
-      correctAnswer5.isRoundAnswer = true;
+      correctAnswer5.setRoundAnswer(true);
+
     },
-    getRandomInt: function (minValue, maxValue) {
-      minValue = Math.ceil(minValue);
-      maxValue = Math.floor(maxValue);
-      return Math.floor(Math.random() * (maxValue - minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
+    getRandomInt: function (round) {
+      let ids=round.map(a=>a.id);
+      //var minValue = Math.min(ids);
+      //var maxValue = Math.max(ids);
+      return ids[Math.floor(Math.random() * ids.length)];
+      //return Math.floor(Math.random() * (maxValue - minValue) + minValue); // The maximum is exclusive and the minimum is inclusive
     },
     setActiveRound: function (round) {
       switch (round) {
@@ -193,8 +218,11 @@ export default {
             answerFlag1.classValidation = "img-valid";
             //TODO ....
             // call AI
+            this.aiResponse=this.getConversation(answerFlag1.apiKeyWord); 
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag1.classValidation = "img-invalid";
@@ -210,8 +238,11 @@ export default {
             answerFlag2.classValidation = "img-valid";
             //TODO ....
             // call AI
+            this.aiResponse=this.getConversation(answerFlag2.apiKeyWord);
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag2.classValidation = "img-invalid";
@@ -228,8 +259,11 @@ export default {
             answerFlag3.classValidation = "img-valid";
             //TODO ....
             // call AI
+            this.aiResponse=this.getConversation(answerFlag3.apiKeyWord);
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag3.classValidation = "img-invalid";
@@ -245,9 +279,12 @@ export default {
             answerFlag4.showCountryName = true;
             answerFlag4.classValidation = "img-valid";
             //TODO ....
-            // call AI
+            // call AI 
+            this.aiResponse=this.getConversation(answerFlag4.apiKeyWord);
             // disable all buttons
             // enable "Next button"
+            //set session
+            this.setSession();
           } else {
             //TODO ....
             answerFlag4.classValidation = "img-invalid";
@@ -263,8 +300,10 @@ export default {
             answerFlag5.showCountryName = true;
             answerFlag5.classValidation = "img-valid";
             //TODO ....
-            // call AI
-            // set session score = 2 an
+            // call AI         
+            this.aiResponse=this.getConversation(answerFlag5.apiKeyWord);
+            //set session
+            this.setSession();
           } else {
 
             answerFlag5.classValidation = "img-invalid";
@@ -282,8 +321,27 @@ export default {
     moveToNextRound: function () {
       this.setActiveRound(this.roundNum);
       this.$emit('nextBtnClicked')
-      // TODO gianmarco....
     },
+    getConversation:async function(message) { 
+      var accessToken = "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";
+      var body = {
+          model: "text-davinci-003",
+          prompt: "".concat(message),
+      };
+      const axios=require("axios");
+      var res = await axios.post('https://api.openai.com/v1/completions', body, {
+          headers: {
+              authorization: "Bearer ".concat(accessToken),
+              "Content-Type": "application/json",
+          },
+      }); 
+      this.aiResponse=res.data.choices[0].text;
+      return res.data.choices[0].text;
+    },
+    setSession:function(){ 
+        this.totalScore=this.totalScore+20;  
+    },
+    
     disableRoundButtons: function(data)
     {
       data.forEach( element => {
@@ -292,8 +350,9 @@ export default {
     }
   },
   created() {
+    this.getConversation("Fun fact about Italy");
     this.setFlagsPerRound();
-    this.setActiveRound(1);
+    this.setActiveRound(this.roundNum);
     this.isBntDisabled = true;
   },
 };
