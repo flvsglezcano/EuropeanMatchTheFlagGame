@@ -6,37 +6,42 @@
         <button @click="checkAnswer(flag.id)">
           <img src="flag.imagePath" class="flag.classValidation" />
         </button>
-        <p>Game Time:</p>
-        <span v-show="flag.showCountryName">{{ flag.country }}</span>
+        <!-- <p>Game Time:</p>
+        <span v-show="flag.showCountryName">{{ flag.country }}</span> -->
       </div>
     </div>
   </div>
-  <p id="AIresponse">AI Response</p>
-  <button class="btn btn-primary">
+  <!-- <p id="AIresponse">AI Response</p> -->
+  <button class="btn btn-primary" @click="moveToNextRound()">
     <!-- :disabled="ifNoSelectionMade"> -->
     Next Round
   </button>
 </template>
-<script lang="js">
 
-const imagesFolder = "./assets/flag-images/";
+<script lang="js">
+// const imagesFolder = "./assets/flag-images/";
 export default {
   name: "GameRound",
-  props: ["flags"],
+  props: ["flags", "roundNum"],
   data() {
     return {
       activeRoundFlags: [],
       nextRound: Number,
       round1: [],
       answerRound1: Number,
+      correctRound1Answer: Number,
       round2: [],
       answerRound2: Number,
+      correctRound2Answer: Number,
       round3: [],
       answerRound3: Number,
+      correctRound3Answer: Number,
       round4: [],
       answerRound4: Number,
+      correctRound4Answer: Number,
       round5: [],
       answerRound5: Number,
+      correctRound5Answer: Number,
       flagModel:{
         id: Number,
         country: String,
@@ -56,9 +61,9 @@ export default {
   methods: {
     setFlagsPerRound: function () {
       this.flags.forEach((flagData) => {
-        let flag = JSON.parse(flagData);
+        let flag = JSON.parse(JSON.stringify(flagData));
         console.log(flag.id);
-        let element = this.flagModel(flag.id, flag.country, flag.apiKeyWord, `${imagesFolder}${flag.imagePath}`, false, false,"");
+        let element = [];
         switch (flag.id) {
           case 1:
           case 2:
@@ -66,10 +71,9 @@ export default {
           case 4: {
             this.round1.push(element);
             this.answerRound1 = this.getRandomInt(1, 5);
-            let correctAnswer = this.round1.find(
+            this.correctRound1Answer = this.round1.find(
               (e) => e.id === this.answerRound1.id
             );
-            correctAnswer.setActiveRound(true);
             break;
           }
           case 5:
@@ -78,10 +82,11 @@ export default {
           case 8: {
             this.round2.push(element);
             this.answerRound2 = this.getRandomInt(5, 9);
-            let correctAnswer = this.round1.find(
+            let correctAnswer = this.round2.find(
               (e) => e.id === this.answerRound2.id
             );
-            correctAnswer.setActiveRound(true);
+
+            console.log(correctAnswer)
 
             break;
           }
@@ -91,11 +96,9 @@ export default {
           case 12: {
             this.round3.push(element);
             this.answerRound3 = this.getRandomInt(9, 13);
-            let correctAnswer = this.round1.find(
+            this.correctRound3sAnswer = this.round3.find(
               (e) => e.id === this.answerRound3.id
             );
-            correctAnswer.setActiveRound(true);
-
             break;
           }
           case 13:
@@ -104,11 +107,9 @@ export default {
           case 16: {
             this.round4.push(element);
             this.answerRound4 = this.getRandomInt(13, 17);
-            let correctAnswer = this.round1.find(
+            this.correctRound4Answer = this.round4.find(
               (e) => e.id === this.answerRound4.id
             );
-            correctAnswer.setActiveRound(true);
-
             break;
           }
           case 17:
@@ -117,10 +118,9 @@ export default {
           case 20: {
             this.round5.push(element);
             this.answerRound5 = this.getRandomInt(17, 21);
-            let correctAnswer = this.round1.find(
+            this.correctRound5Answer = this.round5.find(
               (e) => e.id === this.answerRound5.id
             );
-            correctAnswer.isRoundAnswer = true;
             break;
           }
           default:
@@ -244,7 +244,6 @@ export default {
             answerFlag5.classValidation = "img-invalid";
              //TODO ....
              //set session score = 0 an
-
           }
            // disable all buttons  ip
            // enable "Next button" ip
@@ -254,26 +253,16 @@ export default {
         }
       }
     },
-    moveToNextRound: function (next) {
-      this.setActiveRound(next);
+    moveToNextRound: function () {
+      this.setActiveRound(this.roundNum);
+      this.$emit('nextBtnClicked')
       // TODO gianmarco....
     },
-
-
   },
   created() {
     this.setFlagsPerRound();
     this.setActiveRound(1);
   },
-  ifNoSelectionMade() {
-    return true;
-  },
-  updateSession(round) {
-    if (round.isCorrectAnswer) {
-      this.totalScore = this.totalScore + 20;
-    }
-  }
-
 };
 </script>
 
@@ -293,7 +282,6 @@ img {
 .img-invalid {
   border: 15px solid rgb(167, 9, 46);
 }
-
 .game-box {
   position: relative;
   max-width: 840px;
