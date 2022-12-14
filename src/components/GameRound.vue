@@ -13,7 +13,6 @@
           <img :src="flag.imagePath" :class="flag.classValidation" />
         </button>
         <br/><br/>
-        <!-- <p>Game Time:</p> -->
         <span v-if="flag.showCountryName">Correct, Great Job!</span>
         <span v-if="flag.showTryAgainPrompt">So close! Proceed to the next round!</span> 
       </div>
@@ -21,12 +20,13 @@
   </div>
   
   <div v-if="this.userAnsweredCorrectly">
-    <p id="AIresponse">AI Response</p>
-    {{aiResponse}}
+    <p id="AIresponse"><b>Fun Fact from AI</b></p>
+    <p class="alert alert-info">{{aiResponse}}</p>
   </div>
   <button class="btn btn-lg btn-primary" @click="moveToNextRound()" id="nextBtn" :disabled="ifNoSelectionMade">
     Next Round
   </button>
+  <br/><br/>
 </template>
 
 <script lang="js">
@@ -114,8 +114,6 @@ export default {
     setFlagsPerRound: function () {
       this.flags.forEach((flagJson) => {
         let flag = JSON.parse(JSON.stringify(flagJson));
-        console.log(this.flags)
-        console.log(flag.id);
         let element = this.setflagModel(flag.id, flag.country, flag.apiKeyWord, require(`../assets/flags-images/${flag.image}`) , false, false, "", false);
         this.flagData.push(element);
       });
@@ -212,25 +210,16 @@ export default {
       }
     },
     checkAnswer: function (id) {
-      console.log("button clicked");
-      console.log(this.activeRoundNumber);
       switch (this.activeRoundNumber) {
         case 1: {
           let answerFlag1 = this.round1.find((e) => e.id === id);
-          console.log(answerFlag1);
           if (answerFlag1.isRoundAnswer === true) { 
             this.userAnsweredCorrectly = true;
             answerFlag1.showCountryName = true;
             answerFlag1.classValidation = "img-valid";
             this.disableRoundButtons(this.round1);
            this.isBtnDisabled= false;
-            //TODO ....
-            // call AI
-            this.aiResponse=this.getConversation(answerFlag1.apiKeyWord); 
-            // disable all buttons
-
-            // enable "Next button"
-            //set session
+            this.aiResponse=this.getConversation("Fun fact about " + answerFlag1.country); 
             this.setSession();
           } else {
             this.userAnsweredCorrectly = false;
@@ -241,9 +230,6 @@ export default {
           }
           this.disableRoundButtons(this.round1);
           this.isNextRoundBtnDisabled= false;
-           //this.round1.forEach((flag)=>{
-            //$('#'+flag.id).attr('disabled','disabled');
-           //})
           break;
         }
         case 2: {
@@ -252,12 +238,7 @@ export default {
             this.userAnsweredCorrectly = true;
             answerFlag2.showCountryName = true;
             answerFlag2.classValidation = "img-valid";
-            //TODO ....
-            // call AI
-            this.aiResponse=this.getConversation(answerFlag2.apiKeyWord);
-            // disable all buttons
-            // enable "Next button"
-            //set session
+            this.aiResponse=this.getConversation("Fun fact about " + answerFlag2.country);
             this.setSession();
           } else {
             this.userAnsweredCorrectly = false;
@@ -275,12 +256,7 @@ export default {
             this.userAnsweredCorrectly = true;
             answerFlag3.showCountryName = true;
             answerFlag3.classValidation = "img-valid";
-            //TODO ....
-            // call AI
-            this.aiResponse=this.getConversation(answerFlag3.apiKeyWord);
-            // disable all buttons
-            // enable "Next button"
-            //set session
+            this.aiResponse=this.getConversation("Fun fact about " + answerFlag3.country);
             this.setSession();
           } else {
             this.userAnsweredCorrectly = false;
@@ -298,12 +274,7 @@ export default {
             this.userAnsweredCorrectly = true;
             answerFlag4.showCountryName = true;
             answerFlag4.classValidation = "img-valid";
-            //TODO ....
-            // call AI 
-            this.aiResponse=this.getConversation(answerFlag4.apiKeyWord);
-            // disable all buttons
-            // enable "Next button"
-            //set session
+            this.aiResponse=this.getConversation("Fun fact about " + answerFlag4.country);
             this.setSession();
           } else {
             this.userAnsweredCorrectly = false;
@@ -320,18 +291,12 @@ export default {
             this.userAnsweredCorrectly = true;
             answerFlag5.showCountryName = true;
             answerFlag5.classValidation = "img-valid";
-            //TODO ....
-            // call AI         
-            this.aiResponse=this.getConversation(answerFlag5.apiKeyWord);
-            //set session
+            this.aiResponse=this.getConversation("Fun fact about " +  answerFlag5.country);
             this.setSession();
           } else {
             this.userAnsweredCorrectly = false;
             answerFlag5.showTryAgainPrompt = true;
             answerFlag5.classValidation = "img-invalid";
-             //TODO ....
-             //set session score = 0 an
-
           }
           this.disableRoundButtons(this.round5);
           this.isNextRoundBtnDisabled= false;
@@ -342,13 +307,13 @@ export default {
     moveToNextRound: function () {
       this.setActiveRound(this.roundNum);
       this.$emit('nextBtnClicked',this.totalScore);
-      // TODO gianmarco....
     },
     getConversation:async function(message) { 
       var accessToken = "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";
       var body = {
           model: "text-davinci-003",
-          prompt: message,
+          max_tokens: 1000,
+          prompt: message
       };
       const axios=require("axios");
       var res = await axios.post('https://api.openai.com/v1/completions', body, {
@@ -356,8 +321,8 @@ export default {
               authorization: "Bearer ".concat(accessToken),
               "Content-Type": "application/json",
           },
-      }); 
-      console.log(res)
+      });
+      console.log(res.data.choices[0].text)
       this.aiResponse=res.data.choices[0].text;
       return res.data.choices[0].text;
     },
@@ -367,8 +332,6 @@ export default {
       }
       var totalScore=parseInt(localStorage.getItem("totalScore"))+20;
       localStorage.setItem("totalScore",totalScore.toString()) ;
-      console.log("localstorage totalscore");
-      console.log(localStorage.getItem("totalScore"));
     },
     
     disableRoundButtons: function(data)
@@ -379,8 +342,7 @@ export default {
     }
   },
   mounted(){
-    console.log(this.countryNameAnswer)
-    this.getConversation("Fun fact about the country " + this.countryNameAnswer);
+    this.getConversation("Fun fact about " + this.countryNameAnswer);
   },
   created() {
     this.setFlagsPerRound();
@@ -411,8 +373,14 @@ img {
   background-color: rgb(93, 210, 236);
   border: 5px solid rgb(244, 242, 248);
 }
-
 .container > row {
   max-width: 750px !important;
+}
+
+
+
+p{
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 </style>
